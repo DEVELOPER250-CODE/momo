@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MOMO · 官方下载中心</title>
+  <!-- Font Awesome 6 (free icons, mimicking modern vibrant style) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      background: linear-gradient(145deg, #fef9f2 0%, #fff4e8 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    /* MOMO-inspired abstract background elements */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.08) 0%, rgba(255, 184, 107, 0.02) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 184, 107, 0.1) 0%, rgba(255, 235, 200, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* main card - modern MOMO aesthetic: clean, rounded, soft shadows */
+    .download-container {
+      max-width: 640px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(0px);
+      border-radius: 64px;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: transform 0.25s ease;
+      z-index: 2;
+      position: relative;
+      border: 1px solid rgba(255, 245, 235, 0.8);
+    }
+
+    /* decorative header with MOMO brand rhythm */
+    .hero-graphic {
+      background: linear-gradient(135deg, #FF6B4A 0%, #FF8A5C 100%);
+      padding: 2rem 2rem 3rem 2rem;
+      text-align: center;
+      position: relative;
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+    }
+
+    .hero-graphic::after {
+      content: "❀";
+      font-size: 110px;
+      opacity: 0.1;
+      position: absolute;
+      bottom: -30px;
+      right: 20px;
+      font-family: serif;
+      color: white;
+      pointer-events: none;
+      transform: rotate(10deg);
+    }
+
+    .app-icon {
+      background: white;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 1rem;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s;
+    }
+
+    .app-icon i {
+      font-size: 52px;
+      color: #FF6B4A;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+    }
+
+    .hero-graphic h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: white;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-graphic .tagline {
+      font-weight: 500;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0,0,0,0.08);
+      display: inline-block;
+      padding: 0.25rem 1rem;
+      border-radius: 60px;
+      backdrop-filter: blur(2px);
+    }
+
+    /* content area */
+    .download-info {
+      padding: 2rem 2rem 2.2rem;
+      background: #ffffff;
+    }
+
+    .version-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid #f0e7df;
+      padding-bottom: 0.75rem;
+    }
+
+    .version-badge {
+      background: #fef3e8;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #D45A3B;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .version-badge i {
+      font-size: 0.8rem;
+    }
+
+    .size-info {
+      font-size: 0.85rem;
+      color: #9b7e6b;
+      font-weight: 500;
+    }
+
+    .feature-list {
+      margin: 1.5rem 0 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fefaf7;
+      padding: 0.6rem 1rem;
+      border-radius: 60px;
+      transition: all 0.2s;
+    }
+
+    .feature-item i {
+      width: 32px;
+      height: 32px;
+      background: #ffe3d4;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #FF6B4A;
+      font-size: 1rem;
+    }
+
+    .feature-text {
+      font-weight: 500;
+      color: #2d241e;
+      font-size: 0.95rem;
+    }
+
+    .feature-sub {
+      font-size: 0.75rem;
+      color: #b59882;
+      margin-left: 6px;
+    }
+
+    /* DOWNLOAD BUTTON - MOMO STYLE (bold, rounded, gradient) */
+    .download-btn-wrapper {
+      margin: 1.8rem 0 1rem;
+      text-align: center;
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: linear-gradient(105deg, #FF5E3A 0%, #FF3B6F 110%);
+      border: none;
+      width: 100%;
+      max-width: 340px;
+      padding: 1rem 2rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: white;
+      border-radius: 80px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 12px 22px -12px rgba(255, 75, 43, 0.5);
+      letter-spacing: -0.2px;
+      backdrop-filter: blur(2px);
+    }
+
+    .download-button i {
+      font-size: 1.5rem;
+      transition: transform 0.2s;
+    }
+
+    .download-button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 30px -12px rgba(255, 75, 43, 0.6);
+      background: linear-gradient(105deg, #FF4A24 0%, #FF2A5A 110%);
+    }
+
+    .download-button:active {
+      transform: scale(0.98);
+    }
+
+    /* security & trust section */
+    .trust-note {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #bfa693;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      border-top: 1px solid #f2e4da;
+      padding-top: 1.5rem;
+    }
+
+    .trust-note span i {
+      margin-right: 5px;
+      font-size: 0.7rem;
+    }
+
+    /* footer subtle */
+    .footer-note {
+      background: #fef6f0;
+      text-align: center;
+      padding: 0.9rem;
+      font-size: 0.7rem;
+      color: #b2947e;
+      border-top: 1px solid #faeadf;
+      letter-spacing: 0.3px;
+    }
+
+    /* ripple effect for button (momo playful) */
+    @keyframes softRipple {
+      0% { box-shadow: 0 0 0 0 rgba(255, 94, 58, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(255, 94, 58, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 94, 58, 0); }
+    }
+
+    .click-ripple {
+      animation: softRipple 0.5s ease-out;
+    }
+
+    /* responsiveness */
+    @media (max-width: 500px) {
+      .download-container {
+        border-radius: 48px;
+      }
+      .hero-graphic h1 {
+        font-size: 2.2rem;
+      }
+      .download-button {
+        font-size: 1.1rem;
+        padding: 0.85rem 1.5rem;
+        gap: 10px;
+      }
+      .feature-item {
+        padding: 0.5rem 0.8rem;
+      }
+      .download-info {
+        padding: 1.5rem;
+      }
+    }
+
+    /* custom download toast / status (optional but nice) */
+    .toast-message {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1e1916;
+      color: #ffefe6;
+      padding: 12px 24px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      backdrop-filter: blur(12px);
+      background: rgba(30, 25, 22, 0.9);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: monospace;
+    }
+    .toast-message.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="download-container">
+  <div class="hero-graphic">
+    <div class="app-icon">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+    <h1>MOMO</h1>
+    <div class="tagline">
+      <i class="fas fa-crown" style="font-size: 0.7rem;"></i>  connect · vibe · express
+    </div>
+  </div>
+
+  <div class="download-info">
+    <div class="version-row">
+      <div class="version-badge">
+        <i class="fas fa-code-branch"></i> 版本 6.8.0
+      </div>
+      <div class="size-info">
+        <i class="fas fa-database"></i> 73.2 MB · 更新于 2026.04
+      </div>
+    </div>
+
+    <div class="feature-list">
+      <div class="feature-item">
+        <i class="fas fa-bolt"></i>
+        <div class="feature-text">极速配对 & 高清通话 <span class="feature-sub">全新引擎</span></div>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-shield-alt"></i>
+        <div class="feature-text">隐私保护 · 端到端加密 <span class="feature-sub">安全认证</span></div>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-face-smile"></i>
+        <div class="feature-text">数千款动态表情 & 魔幻主题 <span class="feature-sub">MOMO原创</span></div>
+      </div>
+      <div class="feature-item">
+        <i class="fas fa-globe"></i>
+        <div class="feature-text">全球畅聊无界，智能翻译 <span class="feature-sub">实时互动</span></div>
+      </div>
+    </div>
+
+    <div class="download-btn-wrapper">
+      <button id="downloadBtn" class="download-button">
+        <i class="fas fa-download"></i> 下载 MOMO APP
+        <i class="fas fa-arrow-right" style="font-size: 1rem;"></i>
+      </button>
+    </div>
+
+    <div class="trust-note">
+      <span><i class="fas fa-check-circle"></i> 官方正版</span>
+      <span><i class="fas fa-laptop-code"></i> 适配 Android 8.0+</span>
+      <span><i class="fas fa-cloud-arrow-down"></i> 高速下载</span>
+    </div>
+  </div>
+  <div class="footer-note">
+    <i class="fas fa-heart" style="color: #FF6B4A; font-size: 0.6rem;"></i> MOMO · 让每一次相遇都怦然心动
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-message">
+  <i class="fas fa-spinner fa-pulse"></i> <span id="toastText">正在准备下载...</span>
+</div>
+
+<script>
+  (function() {
+    // ----- 直接使用提供的下载链接 -----
+    const DOWNLOAD_URL = "https://archive.org/download/mo-mo_202604/MoMo.apk";
+    
+    // DOM elements
+    const downloadButton = document.getElementById('downloadBtn');
+    const toastEl = document.getElementById('toastMsg');
+    const toastTextSpan = document.getElementById('toastText');
+    
+    let toastTimeout = null;
+    
+    // 优雅提示方法 (模拟momo风格的轻提示)
+    function showToast(message, isSuccess = true, autoHide = true) {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      
+      // 更新图标和文本
+      if (isSuccess) {
+        toastTextSpan.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 6px;"></i> ${message}`;
+      } else {
+        toastTextSpan.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 6px;"></i> ${message}`;
+      }
+      toastEl.classList.add('show');
+      
+      if (autoHide) {
+        toastTimeout = setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, 2800);
+      }
+    }
+    
+    // 隐藏toast
+    function hideToast() {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastEl.classList.remove('show');
+    }
+    
+    // 主动触发下载 (通过创建隐藏a标签, 兼容各种浏览器)
+    function triggerDownload(url, filename = 'MoMo.apk') {
+      return new Promise((resolve, reject) => {
+        try {
+          // 标准方法: 创建 anchor 并模拟点击
+          const link = document.createElement('a');
+          link.href = url;
+          // 设置download属性有助于指定文件名 (但跨域重定向或某些情况下不能强制改名，但是没关系)
+          link.download = filename;
+          link.target = '_blank';   // 有些浏览器需要新标签页才能触发下载，但一般同源或允许跨域?
+          // 但为了更好的兼容性，并且该链接直接指向.apk文件，浏览器会直接下载。
+          // 为了防止被popup拦截, 我们采用click触发
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          resolve(true);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+    
+    // 处理下载点击的主要逻辑 (模拟MOMO设计: 响应式，添加动画效果)
+    function handleDownload() {
+      // 添加波纹/点击特效
+      downloadButton.classList.add('click-ripple');
+      setTimeout(() => {
+        downloadButton.classList.remove('click-ripple');
+      }, 500);
+      
+      // 禁用按钮一小会儿避免重复提交（但不禁用也行，我们加个防抖）
+      if (downloadButton.disabled) return;
+      downloadButton.disabled = true;
+      
+      // 显示toast: 启动下载
+      showToast("正在连接安全服务器 · 即将开始下载", true, false);
+      toastTextSpan.innerHTML = `<i class="fas fa-cloud-download-alt fa-fw"></i> 正在启动下载...`;
+      
+      // 模拟一点微延迟让体验更真实（不延迟直接触发，但为了让toast显示")
+      setTimeout(() => {
+        try {
+          // 通过调用triggerDownload，直接使用官方提供的下载链接
+          triggerDownload(DOWNLOAD_URL, 'MOMO_Official_v6.8.0.apk')
+            .then(() => {
+              // 成功触发下载
+              showToast("下载已开始！感谢使用 MOMO", true, true);
+              // 重置按钮状态
+              downloadButton.disabled = false;
+            })
+            .catch((err) => {
+              console.warn("trigger download error", err);
+              // 如果标准方法失败，尝试使用第二种后备：用window.open
+              try {
+                window.open(DOWNLOAD_URL, '_blank');
+                showToast("下载已在新窗口开始，若未响应请检查浏览器设置", true, true);
+              } catch (fallbackErr) {
+                showToast("无法自动下载，请复制链接手动下载", false, true);
+              }
+              downloadButton.disabled = false;
+            });
+        } catch (error) {
+          console.error("Unexpected error", error);
+          showToast("下载出错，请稍后再试", false, true);
+          downloadButton.disabled = false;
+        }
+      }, 120);
+    }
+    
+    // 绑定点击事件 (额外添加安全考虑: 如果用户点击时环境不支持但基本现代浏览器均支持)
+    downloadButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleDownload();
+    });
+    
+    // 可选: 如果是触摸设备同样适用, 并且避免右键误触
+    downloadButton.addEventListener('touchstart', (e) => {
+      // 只为了移动端防止300ms后双击导致两次，但无伤大雅
+    });
+    
+    // 额外小细节：在页面加载完成后预检查链接有效性(仅控制台友好，不用太复杂)
+    // 展示一个可爱的加载完毕提示, 非必要但提升专业感
+    window.addEventListener('load', () => {
+      console.log("MOMO 下载页已就绪 | 设计语言 inspired by MOMO");
+      // 短暂显示就绪 (可选小提示)
+      setTimeout(() => {
+        // 温和提示用户点击下载按钮
+        const subtleHint = document.createElement('div');
+        // 不使用侵入式, 只做短暂轻闪
+      }, 300);
+    });
+    
+    // 添加对于移动端安全区域适配
+    const style = document.createElement('style');
+    style.textContent = `
+      @supports (padding: max(0px)) {
+        .download-container {
+          margin-bottom: env(safe-area-inset-bottom);
+        }
+        .hero-graphic {
+          padding-top: max(1.5rem, env(safe-area-inset-top));
+        }
+      }
+      .download-button i.fa-arrow-right {
+        transition: transform 0.2s ease;
+      }
+      .download-button:hover i.fa-arrow-right {
+        transform: translateX(4px);
+      }
+    `;
+    document.head.appendChild(style);
+  })();
+</script>
+</body>
+</html>
