@@ -16,28 +16,73 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f5f5f5;
             min-height: 100vh;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Main container - sharp edges, minimalist */
-        .main-center {
-            max-width: 500px;
-            width: 90%;
-            margin: 0 auto;
-            padding: 60px 0 80px;
-            position: relative;
-            z-index: 10;
+        /* Grid layout - no overlap, clean separation */
+        .page-grid {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* Content box - sharp edges (no border radius) */
-        .content-box {
+        /* Top ad bar */
+        .ad-top {
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            padding: 32px 28px;
-            border: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        /* Title - minimalist */
+        /* Middle section: left ad + main + right ad */
+        .middle-row {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+
+        /* Left ad column */
+        .ad-left {
+            flex: 0 0 160px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Right ad column */
+        .ad-right {
+            flex: 0 0 160px;
+            background: white;
+            border-left: 1px solid #e0e0e0;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Main content - sharp edges, no radius */
+        .main-content {
+            flex: 1;
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 32px 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        /* Title */
         .title {
             font-size: 24px;
             font-weight: 700;
@@ -46,7 +91,7 @@
             letter-spacing: -0.3px;
         }
 
-        /* Agreement section - sharp edges */
+        /* Agreement box - sharp */
         .agreement-section {
             margin: 24px 0;
             border: 1px solid #e8e8e8;
@@ -70,7 +115,6 @@
             margin-top: 10px;
         }
 
-        /* Checkbox row */
         .checkbox-row {
             display: flex;
             align-items: center;
@@ -90,7 +134,7 @@
             font-weight: 500;
         }
 
-        /* Download button - only this has round corners */
+        /* Download button - only rounded corners */
         .download-btn {
             width: 100%;
             background: #1a73e8;
@@ -110,110 +154,31 @@
         .download-btn.active {
             opacity: 1;
             cursor: pointer;
-            background: #1a73e8;
         }
 
         .download-btn.active:hover {
             background: #1557b0;
         }
 
-        /* ========== ADS POSITIONING (sides, top, bottom, left, right) ========== */
-        /* Top ad bar */
-        .ad-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: auto;
-            min-height: 70px;
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 8px 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
         /* Bottom ad bar */
         .ad-bottom {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: auto;
-            min-height: 70px;
             background: white;
             border-top: 1px solid #e0e0e0;
-            z-index: 100;
+            padding: 12px 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 8px 16px;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: auto;
         }
 
-        /* Left side ad (vertical) */
-        .ad-left {
-            position: fixed;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: auto;
-            min-width: 120px;
-            background: white;
-            border-right: 1px solid #e0e0e0;
-            z-index: 99;
-            padding: 16px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Right side ad (vertical) */
-        .ad-right {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: auto;
-            min-width: 120px;
-            background: white;
-            border-left: 1px solid #e0e0e0;
-            z-index: 99;
-            padding: 16px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Responsive - hide side ads on small screens */
-        @media (max-width: 900px) {
-            .ad-left, .ad-right {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .ad-top, .ad-bottom {
-                position: relative;
-                margin: 8px 0;
-            }
-            body {
-                padding-top: 0;
-            }
-            .main-center {
-                padding: 20px 0;
-            }
-        }
-
-        /* Ad inner containers */
+        /* Ad inner styling */
         .ad-slot {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 60px;
             background: #fff;
         }
@@ -224,51 +189,67 @@
             text-align: center;
             margin-bottom: 4px;
         }
+
+        /* Responsive: hide side ads on narrow screens */
+        @media (max-width: 900px) {
+            .ad-left, .ad-right {
+                display: none;
+            }
+            .middle-row {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 24px 20px;
+            }
+            .title {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
+<div class="page-grid">
+    <!-- TOP AD BANNERS -->
+    <div class="ad-top" id="adTop"></div>
 
-<!-- TOP AD -->
-<div class="ad-top" id="adTop"></div>
-
-<!-- LEFT SIDE AD -->
-<div class="ad-left" id="adLeft"></div>
-
-<!-- RIGHT SIDE AD -->
-<div class="ad-right" id="adRight"></div>
-
-<!-- BOTTOM AD -->
-<div class="ad-bottom" id="adBottom"></div>
-
-<!-- MAIN CENTER CONTENT (minimalist, sharp edges except button) -->
-<div class="main-center">
-    <div class="content-box">
-        <div class="title">MOMO payment tester</div>
-
-        <!-- Agreement box - sharp edges -->
-        <div class="agreement-section">
-            <div class="waiver-line">
-                All ethical or unethical use of the app concerns you, We are not responsible.
+    <!-- MIDDLE ROW: LEFT AD + MAIN + RIGHT AD -->
+    <div class="middle-row">
+        <div class="ad-left" id="adLeft"></div>
+        
+        <div class="main-content">
+            <div class="title">MOMO payment tester</div>
+            
+            <div class="agreement-section">
+                <div class="waiver-line">
+                    All ethical or unethical use of the app concerns you, We are not responsible.
+                </div>
+                <div class="waiver-line-kinyarwanda">
+                    Imikoreshereze yiyi application yose yabaikwiye cg idakwiye birakureba, Ntabwo tugushinzwe.
+                </div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="liabilityConsent">
+                    <label for="liabilityConsent">I understand and accept full responsibility</label>
+                </div>
             </div>
-            <div class="waiver-line-kinyarwanda">
-                Imikoreshereze yiyi application yose yabaikwiye cg idakwiye birakureba, Ntabwo tugushinzwe.
-            </div>
-            <div class="checkbox-row">
-                <input type="checkbox" id="liabilityConsent">
-                <label for="liabilityConsent">I understand and accept full responsibility</label>
-            </div>
+            
+            <button id="downloadBtn" class="download-btn" disabled>DOWNLOAD APK</button>
         </div>
-
-        <!-- Download button (only rounded element) -->
-        <button id="downloadBtn" class="download-btn" disabled>DOWNLOAD APK</button>
+        
+        <div class="ad-right" id="adRight"></div>
     </div>
+    
+    <!-- BOTTOM AD BANNERS -->
+    <div class="ad-bottom" id="adBottom"></div>
 </div>
 
-<!-- ========== ALL ADS SCRIPTS (HEAVY, INTELLIGENT, PROFITABLE) ========== -->
+<!-- ========== ALL ADS INJECTION (INTELLIGENT, NO OVERLAP) ========== -->
 <script>
     (function() {
-        // All ad codes provided
-        const allAdUnits = [
+        // All provided ad codes
+        const adResources = [
             '<script src="https://pl29195357.profitablecpmratenetwork.com/83/db/be/83dbbe29651b99e65065e3e824eea8a3.js"><\/script>',
             '<script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"><\/script><div id="container-d0ef7e24e59d97ae27dc17b02b6bd298"></div>',
             '<script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"><\/script><div id="container-d0ef7e24e59d97ae27dc17b02b6bd298_2"></div>',
@@ -281,82 +262,69 @@
             '<script src="https://www.profitablecpmratenetwork.com/cb0hf18pyv?key=bafca383b6999eefe362e38921231edc"><\/script>'
         ];
 
-        // Device intelligence: distribute ads to different positions
-        const width = window.innerWidth;
-        
-        function injectAd(containerId, adCode) {
+        function injectInto(containerId, adCodeArray) {
             const container = document.getElementById(containerId);
             if (!container) return;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'ad-slot';
-            const label = document.createElement('div');
-            label.className = 'ad-label';
-            label.innerText = 'Advertisement';
-            wrapper.appendChild(label);
-            const adDiv = document.createElement('div');
-            adDiv.innerHTML = adCode;
-            wrapper.appendChild(adDiv);
-            container.appendChild(wrapper);
+            adCodeArray.forEach(adCode => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ad-slot';
+                const label = document.createElement('div');
+                label.className = 'ad-label';
+                label.innerText = 'Advertisement';
+                wrapper.appendChild(label);
+                const adDiv = document.createElement('div');
+                adDiv.innerHTML = adCode;
+                wrapper.appendChild(adDiv);
+                container.appendChild(wrapper);
+            });
         }
 
-        // Top ad (horizontal)
-        if (width < 768) {
-            injectAd('adTop', allAdUnits[0]);
-            injectAd('adTop', allAdUnits[4]);
+        const screenWidth = window.innerWidth;
+
+        // Top ads: horizontal banners
+        if (screenWidth < 768) {
+            injectInto('adTop', [adResources[0], adResources[4]]);
         } else {
-            injectAd('adTop', allAdUnits[4]);
-            injectAd('adTop', allAdUnits[7]);
+            injectInto('adTop', [adResources[4], adResources[7]]);
         }
 
-        // Bottom ad
-        if (width < 768) {
-            injectAd('adBottom', allAdUnits[3]);
-            injectAd('adBottom', allAdUnits[8]);
+        // Bottom ads
+        if (screenWidth < 768) {
+            injectInto('adBottom', [adResources[3], adResources[8]]);
         } else {
-            injectAd('adBottom', allAdUnits[1]);
-            injectAd('adBottom', allAdUnits[8]);
+            injectInto('adBottom', [adResources[1], adResources[8]]);
         }
 
-        // Left side ad (vertical banners)
-        if (width >= 900) {
-            injectAd('adLeft', allAdUnits[5]);
-            injectAd('adLeft', allAdUnits[6]);
+        // Left side ads (vertical banners) - only on large screens
+        if (screenWidth >= 900) {
+            injectInto('adLeft', [adResources[5], adResources[6]]);
         }
 
-        // Right side ad
-        if (width >= 900) {
-            injectAd('adRight', allAdUnits[2]);
-            injectAd('adRight', allAdUnits[9]);
+        // Right side ads
+        if (screenWidth >= 900) {
+            injectInto('adRight', [adResources[2], adResources[9]]);
         }
 
-        // Extra heavy load - additional floating ads for profitability
-        const extraZone = document.createElement('div');
-        extraZone.style.position = 'fixed';
-        extraZone.style.bottom = '10px';
-        extraZone.style.right = '10px';
-        extraZone.style.width = 'auto';
-        extraZone.style.zIndex = '9999';
-        extraZone.style.background = 'white';
-        extraZone.style.border = '1px solid #ddd';
-        extraZone.style.padding = '5px';
-        extraZone.innerHTML = allAdUnits[6];
-        if (width > 1000) document.body.appendChild(extraZone);
-        
-        // Also preload hidden iframe for better CPM
-        const preload = document.createElement('iframe');
-        preload.src = "https://www.profitablecpmratenetwork.com/cb0hf18pyv?key=bafca383b6999eefe362e38921231edc";
-        preload.width = "0";
-        preload.height = "0";
-        preload.style.display = "none";
-        document.body.appendChild(preload);
+        // Additional heavy load: hidden preload for CPM boost (does not overlay)
+        const preloadFrame = document.createElement('iframe');
+        preloadFrame.src = "https://www.profitablecpmratenetwork.com/cb0hf18pyv?key=bafca383b6999eefe362e38921231edc";
+        preloadFrame.width = "0";
+        preloadFrame.height = "0";
+        preloadFrame.style.display = "none";
+        document.body.appendChild(preloadFrame);
+
+        // Also inject extra script tag for high performance
+        const extraScript = document.createElement('script');
+        extraScript.src = "https://pl29195360.profitablecpmratenetwork.com/27/f7/78/27f778cf345ca592572e38530a63623a.js";
+        extraScript.async = true;
+        document.head.appendChild(extraScript);
     })();
 </script>
 
-<!-- Additional direct script executions (outside content) -->
+<!-- Additional direct script tags (outside any content box) -->
 <script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"></script>
-<script src="https://pl29195360.profitablecpmratenetwork.com/27/f7/78/27f778cf345ca592572e38530a63623a.js" async></script>
 
-<!-- ========== DOWNLOAD LOGIC ========== -->
+<!-- ========== DOWNLOAD HANDLER ========== -->
 <script>
     (function() {
         const checkbox = document.getElementById('liabilityConsent');
@@ -381,7 +349,7 @@
         if (downloadBtn) {
             downloadBtn.addEventListener('click', function(e) {
                 if (!checkbox.checked) {
-                    alert("You must accept the agreement to download.");
+                    alert("You must accept the responsibility agreement to download.");
                     return;
                 }
                 const link = document.createElement('a');
