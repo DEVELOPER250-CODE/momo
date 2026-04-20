@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Phone • MTN Mobile Money</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #202124;
+        }
+
+        body {
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        .phone-app {
+            width: 100%;
+            height: 100%;
+            max-width: 450px;
+            max-height: 800px;
+            background: #1f1f1f;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 450px) {
+            .phone-app {
+                max-width: none;
+                max-height: none;
+            }
+        }
+
+        /* FIXED: Removed fixed height, now auto-sizing */
+        .phone-header {
+            background: #1f1f1f;
+            border-bottom: 1px solid #3c4043;
+            padding: 8px 16px 0 16px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 48px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            color: #8ab4f8;
+            font-size: 24px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .app-title {
+            color: #e8eaed;
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-icon {
+            color: #e8eaed;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .phone-tabs {
+            display: flex;
+            padding: 0 16px;
+            gap: 32px;
+            background: #1f1f1f;
+            margin-top: 4px;
+        }
+
+        .tab {
+            padding: 12px 0;
+            color: #9aa0a6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            color: #8ab4f8;
+            border-bottom-color: #8ab4f8;
+        }
+
+        .tab .material-symbols-outlined {
+            font-size: 18px;
+        }
+
+        .phone-content {
+            flex: 1;
+            overflow: hidden;
+            background: #1f1f1f;
+            position: relative;
+        }
+
+        .recent-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .recent-view.hidden {
+            display: none;
+        }
+
+        .recent-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recent-title {
+            color: #e8eaed;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .clear-all {
+            color: #8ab4f8;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .recent-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .call-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        .call-item:hover {
+            background: #2d2d2d;
+        }
+
+        .call-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .call-info {
+            flex: 1;
+        }
+
+        .call-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .call-name {
+            color: #e8eaed;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .call-type {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+
+        .call-number {
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+
+        .call-time {
+            color: #9aa0a6;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        .call-action {
+            color: #8ab4f8;
+            cursor: pointer;
+        }
+
+        .missed-call {
+            color: #f28b82;
+        }
+
+        .keypad-fab {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: #8ab4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(138, 180, 248, 0.3);
+            transition: all 0.2s;
+            z-index: 50;
+        }
+
+        .keypad-fab:hover {
+            background: #aecbfa;
+        }
+
+        .keypad-fab .material-symbols-outlined {
+            font-size: 28px;
+            color: #1f1f1f;
+        }
+
+        .dialer-slide {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1f1f1f;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 100;
+            max-height: 85%;
+            overflow-y: auto;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .dialer-slide.active {
+            transform: translateY(0);
+        }
+
+        .dialer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #3c4043;
+        }
+
+        .dialer-header h3 {
+            color: #e8eaed;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .close-dialer {
+            color: #8ab4f8;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .number-display {
+            padding: 20px 20px 10px;
+        }
+
+        .number-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #e8eaed;
+            font-size: 32px;
+            font-weight: 400;
+            text-align: left;
+            outline: none;
+            font-family: 'Google Sans', monospace;
+            letter-spacing: 2px;
+        }
+
+        .number-input::placeholder {
+            color: #5f6368;
+        }
+
+        .contact-suggestion {
+            color: #9aa0a6;
+            font-size: 13px;
+            margin-top: 6px;
+            min-height: 18px;
+        }
+
+        .dial-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px 30px 30px;
+        }
+
+        .dial-btn {
+            aspect-ratio: 1;
+            background: #3c4043;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            color: #e8eaed;
+            width: 100%;
+            max-width: 70px;
+            margin: 0 auto;
+        }
+
+        .dial-btn:hover {
+            background: #5f6368;
+        }
+
+        .dial-btn:active {
+            background: #8ab4f8;
+        }
+
+        .dial-number {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .dial-letters {
+            font-size: 9px;
+            color: #9aa0a6;
+            margin-top: 2px;
+        }
+
+        .dial-btn.call-btn {
+            background: #0f9d58;
+        }
+
+        .dial-btn.call-btn .material-symbols-outlined {
+            font-size: 26px;
+            color: white;
+        }
+
+        .dial-btn.delete-btn .material-symbols-outlined {
+            font-size: 22px;
+            color: #e8eaed;
+        }
+
+        .contacts-view,
+        .favorites-view {
+            display: none;
+        }
+
+        .contacts-view.active,
+        .favorites-view.active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .contacts-header {
+            padding: 16px;
+        }
+
+        .add-contact-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3c4043;
+            border: none;
+            border-radius: 24px;
+            color: #8ab4f8;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        .contact-letter-header {
+            padding: 8px 16px;
+            background: #2d2d2d;
+            color: #8ab4f8;
+            font-size: 14px;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 16px;
+        }
+
+        .favorite-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .favorite-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 500;
+        }
+
+        .favorite-name {
+            color: #e8eaed;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* USSD Overlay */
+        .ussd-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ussd-overlay.active {
+            display: flex;
+        }
+
+        .ussd-box {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 24px 20px 20px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+        }
+
+        .ussd-message {
+            color: #ffffff;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            margin-bottom: 20px;
+            max-height: 350px;
+        }
+
+        .ussd-input-line {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #8ab4f8;
+            margin-bottom: 20px;
+            padding: 4px 0;
+        }
+
+        .ussd-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 8px 0;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .ussd-input::placeholder {
+            color: #5f6368;
+        }
+
+        .ussd-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .ussd-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Google Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.15s;
+        }
+
+        .ussd-btn.send {
+            background: #8ab4f8;
+            color: #1f1f1f;
+        }
+
+        .ussd-btn.send:hover {
+            background: #aecbfa;
+        }
+
+        .ussd-btn.cancel {
+            background: transparent;
+            color: #8ab4f8;
+            border: 1px solid #3c4043;
+        }
+
+        .ussd-btn.cancel:hover {
+            background: #2d2d2d;
+        }
+
+        .ussd-ok-btn {
+            background: #8ab4f8;
+            color: #1f1f1f;
+            padding: 10px 32px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Google Sans', sans-serif;
+            text-transform: uppercase;
+            margin-top: 16px;
+            float: right;
+        }
+
+        .ussd-options-list {
+            color: #e8eaed;
+            line-height: 2;
+            margin: 10px 0;
+        }
+
+        .ussd-options-list span {
+            color: #8ab4f8;
+        }
+
+        /* Notification Toast */
+        .notification-toast {
+            position: absolute;
+            top: -200px;
+            left: 8px;
+            right: 8px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+            z-index: 300;
+            transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border-left: 5px solid #ffcc00;
+            border-right: 1px solid #333;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+
+        .notification-toast.show {
+            top: 8px;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .notification-sender {
+            color: #ffcc00;
+            font-size: 15px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .notification-time {
+            color: #888;
+            font-size: 11px;
+        }
+
+        .notification-message {
+            color: #e8eaed;
+            font-size: 13px;
+            line-height: 1.5;
+            padding-left: 44px;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            padding-left: 44px;
+        }
+
+        .notification-action {
+            color: #8ab4f8;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5f6368;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone-app">
+        <div class="phone-header">
+            <div class="header-top">
+                <div class="header-left">
+                    <a href="#" class="back-btn" id="backBtn"><span
+                            class="material-symbols-outlined">arrow_back</span></a>
+                    <span class="app-title">Phone</span>
+                </div>
+                <div class="header-right">
+                    <span class="material-symbols-outlined header-icon">search</span>
+                    <span class="material-symbols-outlined header-icon">more_vert</span>
+                </div>
+            </div>
+            <div class="phone-tabs">
+                <div class="tab active" data-tab="recent"><span class="material-symbols-outlined">history</span>Recent
+                </div>
+                <div class="tab" data-tab="contacts"><span class="material-symbols-outlined">contacts</span>Contacts
+                </div>
+                <div class="tab" data-tab="favorites"><span class="material-symbols-outlined">star</span>Favorites</div>
+            </div>
+        </div>
+        <div class="phone-content">
+            <div class="recent-view" id="recentView">
+                <div class="recent-header"><span class="recent-title">Recent calls</span><span class="clear-all"
+                        id="clearRecentBtn">Clear all</span></div>
+                <div class="recent-list" id="recentListEl"></div>
+            </div>
+            <div class="contacts-view" id="contactsView">
+                <div class="contacts-header"><button class="add-contact-btn" id="addContactBtn"><span
+                            class="material-symbols-outlined">person_add</span>Create new contact</button></div>
+                <div class="contacts-list" id="contactsListEl"></div>
+            </div>
+            <div class="favorites-view" id="favoritesView">
+                <div class="favorites-grid" id="favoritesGridEl"></div>
+            </div>
+            <div class="keypad-fab" id="keypadFabBtn"><span class="material-symbols-outlined">dialpad</span></div>
+            <div class="dialer-slide" id="dialerSlideEl">
+                <div class="dialer-header">
+                    <h3>Enter number</h3><span class="material-symbols-outlined close-dialer"
+                        id="closeDialerBtn">close</span>
+                </div>
+                <div class="number-display">
+                    <input type="text" class="number-input" id="dialerInput" placeholder="" readonly>
+                    <div class="contact-suggestion" id="contactSuggestionEl"></div>
+                </div>
+                <div class="dial-pad" id="dialPadEl"></div>
+            </div>
+        </div>
+        <div class="ussd-overlay" id="ussdOverlayEl">
+            <div class="ussd-box" id="ussdBoxEl"></div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div class="notification-toast" id="notificationToast">
+            <div class="notification-header">
+                <div class="notification-icon">M</div>
+                <div class="notification-sender" id="notifSender">M-Money</div>
+                <div class="notification-time" id="notifTime">now</div>
+            </div>
+            <div class="notification-message" id="notifMessage"></div>
+            <div class="notification-actions">
+                <span class="notification-action" id="notifReply">REPLY</span>
+                <span class="notification-action" id="notifMarkRead">MARK READ</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            "use strict";
+
+            const randomFirstNames = ['Amara', 'Chidi', 'Dayo', 'Efe', 'Folake', 'Gbenga', 'Ife', 'Jelani', 'Kofi', 'Lumusi', 'Makena', 'Ndidi', 'Obi', 'Penda', 'Rudo', 'Sefu', 'Tafari', 'Uchenna', 'Vimbai', 'Wanjiru', 'Yaa', 'Zola'];
+            const randomLastNames = ['Mugisha', 'Ndayishimiye', 'Hakizimana', 'Uwase', 'Iradukunda', 'Mukamana', 'Nsengiyumva', 'Twagirayezu', 'Niyonzima', 'Uwimana'];
+
+            function generateRandomName() {
+                const first = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)];
+                const last = randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+                return `${first} ${last}`;
+            }
+
+            function generateRandomPhone() {
+                const prefix = ['078', '072', '073'][Math.floor(Math.random() * 3)];
+                const num = Math.floor(Math.random() * 9000000) + 1000000;
+                return prefix + num.toString();
+            }
+
+            function generateContacts() {
+                const contacts = [];
+                const usedNames = new Set();
+                for (let i = 1; i <= 9; i++) {
+                    let name = generateRandomName();
+                    while (usedNames.has(name)) name = generateRandomName();
+                    usedNames.add(name);
+                    const phone = generateRandomPhone();
+                    const avatar = name.split(' ').map(n => n[0]).join('');
+                    contacts.push({
+                        id: i,
+                        name: name,
+                        phone: phone,
+                        favorite: i <= 4,
+                        avatar: avatar
+                    });
+                }
+                contacts.push({ id: 10, name: 'MTN Rwanda', phone: '100', favorite: false, avatar: 'MT' });
+                return contacts;
+            }
+
+            let contactsData = generateContacts();
+
+            let recentCallsData = [
+                { id: 1, contactId: 1, type: 'outgoing', time: '1 hr ago', duration: null },
+                { id: 2, contactId: 2, type: 'incoming', time: '2 hr ago', duration: '1:23' },
+                { id: 3, contactId: 3, type: 'missed', time: '3 hr ago', duration: null },
+                { id: 4, contactId: 4, type: 'outgoing', time: '5 hr ago', duration: '2:15' },
+                { id: 5, contactId: 5, type: 'incoming', time: 'Yesterday', duration: '0:45' }
+            ];
+
+            let currentDialNumber = '';
+            let ussdSession = { step: 0, type: '', phone: '', amount: '', name: '', recipientName: '' };
+            let notificationTimeout = null;
+            let autoHideTimeout = null;
+
+            const $ = (id) => document.getElementById(id);
+            const recentView = $('recentView');
+            const contactsView = $('contactsView');
+            const favoritesView = $('favoritesView');
+            const dialerSlide = $('dialerSlideEl');
+            const ussdOverlay = $('ussdOverlayEl');
+            const ussdBox = $('ussdBoxEl');
+            const dialerInput = $('dialerInput');
+            const contactSuggestion = $('contactSuggestionEl');
+            const dialPad = $('dialPadEl');
+            const recentList = $('recentListEl');
+            const contactsList = $('contactsListEl');
+            const favoritesGrid = $('favoritesGridEl');
+            const notificationToast = $('notificationToast');
+            const notifMessage = $('notifMessage');
+            const notifTime = $('notifTime');
+
+            const getColor = (n) => { const c = ['#1a73e8', '#c5221f', '#e37400', '#0d652d', '#9334e6']; let h = 0; for (let i = 0; i < n.length; i++) h = n.charCodeAt(i) + ((h << 5) - h); return c[Math.abs(h) % c.length]; };
+            const getBalance = () => parseInt(localStorage.getItem('momoBalance') || '45000');
+            const updateBalance = (amt) => { const cur = getBalance(); const nb = cur - amt; localStorage.setItem('momoBalance', nb); return nb; };
+            const findContact = (num) => contactsData.find(c => c.phone.includes(num) || num.includes(c.phone));
+
+            function sendToIndexMessage(amount, recipientName, phone, newBalance) {
+                const transactionData = {
+                    amount: amount,
+                    name: recipientName,
+                    phone: phone,
+                    newBalance: newBalance
+                };
+
+                const pendingMessages = JSON.parse(localStorage.getItem('pendingMMoneyMessages') || '[]');
+                pendingMessages.push({
+                    data: transactionData,
+                    timestamp: Date.now()
+                });
+                localStorage.setItem('pendingMMoneyMessages', JSON.stringify(pendingMessages));
+                localStorage.setItem('lastMMoneyTransaction', JSON.stringify(transactionData));
+            }
+
+            function showNotification(amount, recipientName, phone, newBalance) {
+                if (notificationTimeout) clearTimeout(notificationTimeout);
+                if (autoHideTimeout) clearTimeout(autoHideTimeout);
+
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+                notifTime.textContent = timeStr;
+
+                notifMessage.innerHTML = `*165*S*${amount} RWF transferred to ${recipientName} (0${phone})<br>Fee: 20 RWF. Balance: ${newBalance} RWF.<br>Dial *182*1*3# and send money abroad *RW#`;
+
+                notificationToast.classList.add('show');
+
+                sendToIndexMessage(amount, recipientName, phone, newBalance);
+
+                autoHideTimeout = setTimeout(() => {
+                    notificationToast.classList.remove('show');
+                }, 8000);
+            }
+
+            notificationToast.addEventListener('click', (e) => {
+                if (!e.target.closest('.notification-action')) {
+                    window.location.href = 'index.html';
+                }
+            });
+
+            $('notifReply').addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = 'index.html';
+            });
+
+            $('notifMarkRead').addEventListener('click', (e) => {
+                e.stopPropagation();
+                notificationToast.classList.remove('show');
+                if (autoHideTimeout) clearTimeout(autoHideTimeout);
+            });
+
+            function renderRecent() {
+                recentList.innerHTML = recentCallsData.map(call => {
+                    const c = contactsData.find(x => x.id === call.contactId);
+                    const name = c ? c.name : 'Unknown';
+                    const av = c ? c.avatar : '?';
+                    const col = c ? getColor(c.name) : '#5f6368';
+                    const ic = call.type === 'missed' ? 'call_missed' : (call.type === 'incoming' ? 'call_received' : 'call_made');
+                    const cl = call.type === 'missed' ? 'missed-call' : '';
+                    return `<div class="call-item" data-phone="${c?.phone || ''}"><div class="call-avatar" style="background:${col}">${av}</div><div class="call-info"><div class="call-name-row"><span class="call-name">${name}</span><span class="call-type ${cl}"><span class="material-symbols-outlined" style="font-size:14px;">${ic}</span></span></div><div class="call-number">📞 0${c?.phone || 'Unknown'}</div></div><div class="call-time">${call.time}</div><div class="call-action"><span class="material-symbols-outlined">call</span></div></div>`;
+                }).join('');
+                document.querySelectorAll('.call-item').forEach(el => {
+                    el.addEventListener('click', (e) => { if (!e.target.closest('.call-action')) { currentDialNumber = el.dataset.phone; dialerInput.value = currentDialNumber; dialerSlide.classList.add('active'); } });
+                });
+                document.querySelectorAll('.call-action').forEach(el => {
+                    el.addEventListener('click', (e) => { e.stopPropagation(); const num = el.closest('.call-item').dataset.phone; if (num) { currentDialNumber = num; dialerInput.value = currentDialNumber; makeCall(); } });
+                });
+            }
+
+            function renderContacts() {
+                const sorted = [...contactsData].sort((a, b) => a.name.localeCompare(b.name));
+                let letter = ''; contactsList.innerHTML = '';
+                sorted.forEach(c => {
+                    const fl = c.name[0];
+                    if (fl !== letter) { letter = fl; const h = document.createElement('div'); h.className = 'contact-letter-header'; h.textContent = letter; contactsList.appendChild(h); }
+                    const el = document.createElement('div'); el.className = 'contact-item'; el.dataset.phone = c.phone;
+                    el.innerHTML = `<div class="call-avatar" style="background:${getColor(c.name)}">${c.avatar}</div><div class="call-info"><div class="call-name">${c.name}</div><div class="call-number">📞 0${c.phone}</div></div><div class="call-action"><span class="material-symbols-outlined">call</span></div>`;
+                    el.addEventListener('click', (e) => { if (!e.target.closest('.call-action')) { currentDialNumber = c.phone; dialerInput.value = currentDialNumber; dialerSlide.classList.add('active'); } });
+                    el.querySelector('.call-action').addEventListener('click', (e) => { e.stopPropagation(); currentDialNumber = c.phone; dialerInput.value = currentDialNumber; makeCall(); });
+                    contactsList.appendChild(el);
+                });
+            }
+
+            function renderFavorites() {
+                const favs = contactsData.filter(c => c.favorite);
+                favoritesGrid.innerHTML = favs.map(c => `<div class="favorite-item" data-phone="${c.phone}"><div class="favorite-avatar" style="background:${getColor(c.name)}">${c.avatar}</div><span class="favorite-name">${c.name.split(' ')[0]}</span></div>`).join('');
+                document.querySelectorAll('.favorite-item').forEach(el => el.addEventListener('click', () => { currentDialNumber = el.dataset.phone; dialerInput.value = currentDialNumber; makeCall(); }));
+            }
+
+            function buildDialPad() {
+                const btns = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+                const lets = ['', 'ABC', 'DEF', 'GHI', 'JKL', 'MNO', 'PQRS', 'TUV', 'WXYZ', '', '+', ''];
+                dialPad.innerHTML = '';
+                btns.forEach((b, i) => {
+                    const btn = document.createElement('button'); btn.className = 'dial-btn';
+                    btn.innerHTML = `<span class="dial-number">${b}</span>${lets[i] ? `<span class="dial-letters">${lets[i]}</span>` : ''}`;
+                    btn.addEventListener('click', () => updateDialInput(b));
+                    dialPad.appendChild(btn);
+                });
+                const del = document.createElement('button'); del.className = 'dial-btn delete-btn'; del.innerHTML = '<span class="material-symbols-outlined">backspace</span>';
+                del.addEventListener('click', () => updateDialInput('delete'));
+                dialPad.appendChild(del);
+                const call = document.createElement('button'); call.className = 'dial-btn call-btn'; call.innerHTML = '<span class="material-symbols-outlined">call</span>';
+                call.addEventListener('click', makeCall);
+                dialPad.appendChild(call);
+            }
+
+            function updateDialInput(d) {
+                if (d === 'delete') currentDialNumber = currentDialNumber.slice(0, -1);
+                else if (currentDialNumber.length < 30) currentDialNumber += d;
+                dialerInput.value = currentDialNumber;
+                const c = findContact(currentDialNumber);
+                contactSuggestion.textContent = (c && currentDialNumber.length >= 3 && !currentDialNumber.startsWith('*')) ? `${c.name} • 0${c.phone}` : '';
+            }
+
+            function executeUSSD(code) {
+                ussdSession = { step: 0, type: '', phone: '', amount: '', name: '', recipientName: '' };
+                const p1 = /^\*182\*1\*1\*(\d+)#$/;
+                const p2 = /^\*182\*1\*1\*(\d+)\*(\d+)#$/;
+                const p3 = /^\*182#$/;
+                const p4a = /^\*182\*8\*1\*(\d{6})\*(\d+)#$/;
+                const p4b = /^\*182\*8\*1\*(\d{6})#$/;
+
+                if (p1.test(code)) { const m = code.match(p1); ussdSession.type = 'send'; ussdSession.phone = m[1]; ussdSession.step = 1; showUSSD(); }
+                else if (p2.test(code)) { const m = code.match(p2); ussdSession.type = 'send'; ussdSession.phone = m[1]; ussdSession.amount = m[2]; ussdSession.step = 2; showUSSD(); }
+                else if (p3.test(code)) { ussdSession.type = 'menu'; ussdSession.step = 1; showUSSD(); }
+                else if (p4a.test(code)) { const m = code.match(p4a); ussdSession.type = 'bank'; ussdSession.phone = m[1]; ussdSession.amount = m[2]; ussdSession.step = 2; showUSSD(); }
+                else if (p4b.test(code)) { const m = code.match(p4b); ussdSession.type = 'bank'; ussdSession.phone = m[1]; ussdSession.step = 1; showUSSD(); }
+                else { alert(`Calling ${currentDialNumber}...`); addRecentCall(currentDialNumber, 'outgoing'); closeDialer(); }
+            }
+
+            function showUSSD() {
+                ussdOverlay.classList.add('active'); dialerSlide.classList.remove('active');
+                const s = ussdSession;
+
+                if (s.type === 'send' || s.type === 'bank') {
+                    if (s.step === 1) {
+                        ussdBox.innerHTML = `<div class="ussd-message">Emeza Amafaranga</div><div class="ussd-input-line"><input type="number" class="ussd-input" id="ussdInp" placeholder="Enter amount" value="${s.amount}"></div><div class="ussd-buttons"><button class="ussd-btn cancel" id="ussdCancel">CANCEL</button><button class="ussd-btn send" id="ussdSend">SEND</button></div>`;
+                        $('ussdSend').addEventListener('click', () => { s.amount = $('ussdInp').value; s.step = 2; showUSSD(); });
+                        $('ussdCancel').addEventListener('click', closeUSSD);
+                    } else if (s.step === 2) {
+                        ussdBox.innerHTML = `<div class="ussd-message">Amazina yuwo wishyura</div><div class="ussd-input-line"><input type="text" class="ussd-input" id="ussdInp" placeholder="Enter recipient name" value="${s.recipientName}"></div><div class="ussd-buttons"><button class="ussd-btn cancel" id="ussdCancel">CANCEL</button><button class="ussd-btn send" id="ussdSend">SEND</button></div>`;
+                        $('ussdSend').addEventListener('click', () => { s.recipientName = $('ussdInp').value; s.step = 3; showUSSD(); });
+                        $('ussdCancel').addEventListener('click', closeUSSD);
+                    } else if (s.step === 3) {
+                        ussdBox.innerHTML = `<div class="ussd-message">Washyizeho: ${s.recipientName}, 250${s.phone}, ${s.amount} RWF. Ikiguzi cya RWF 20 kirakurikizwa. Kwemeza Kwohereza amafaranga ku bakoresha Mobile, kanda n ukomeze</div><div class="ussd-input-line"><input type="text" class="ussd-input" id="ussdInp" placeholder="Enter n" maxlength="1"></div><div class="ussd-buttons"><button class="ussd-btn cancel" id="ussdCancel">CANCEL</button><button class="ussd-btn send" id="ussdSend">SEND</button></div>`;
+                        $('ussdSend').addEventListener('click', () => { if ($('ussdInp').value.toLowerCase() === 'n') { s.step = 4; showUSSD(); } });
+                        $('ussdCancel').addEventListener('click', closeUSSD);
+                    } else if (s.step === 4) {
+                        const nb = updateBalance(parseInt(s.amount) + 20);
+                        ussdBox.innerHTML = `<div class="ussd-message">Wohereje ${s.amount} RWF kuri 250${s.phone}. Usigaranye ${nb} RWF. Murakoze gukoresha MTN Mobile Money.</div><button class="ussd-ok-btn" id="ussdOk">OK</button>`;
+                        $('ussdOk').addEventListener('click', () => {
+                            closeUSSD();
+                            addRecentCall(s.phone, 'outgoing');
+                            setTimeout(() => {
+                                showNotification(s.amount, s.recipientName, s.phone, nb);
+                            }, 5000);
+                        });
+                    }
+                } else if (s.type === 'menu') {
+                    if (s.step === 1) {
+                        ussdBox.innerHTML = `<div class="ussd-message">Hitamo:<br/><div class="ussd-options-list"><span>0)</span> Pake za MTN<br/><span>1)</span> Kohereza Amafaranga<br/><span>2)</span> Kugura<br/><span>3)</span> Kwishyura<br/><span>4)</span> Servisi za Banki<br/><span>5)</span> Inguzanyo no Kuzigama<br/><span>6)</span> Konti Yanjye ya MoMo<br/><span>n)</span> Next</div></div><div class="ussd-input-line"><input type="text" class="ussd-input" id="ussdInp" placeholder="Enter option"></div><div class="ussd-buttons"><button class="ussd-btn cancel" id="ussdCancel">CANCEL</button><button class="ussd-btn send" id="ussdSend">SEND</button></div>`;
+                        $('ussdSend').addEventListener('click', () => {
+                            const opt = $('ussdInp').value;
+                            if (opt === '6') {
+                                ussdBox.innerHTML = `<div class="ussd-message">Konti Yanjye ya MoMo<br/>Usigaranye: ${getBalance()} RWF</div><button class="ussd-ok-btn" id="ussdOk">OK</button>`;
+                                $('ussdOk').addEventListener('click', closeUSSD);
+                            } else if (opt === '1') {
+                                s.type = 'send';
+                                ussdBox.innerHTML = `<div class="ussd-message">Emeza nimero yuwo wishyura</div><div class="ussd-input-line"><input type="text" class="ussd-input" id="ussdInp" placeholder="Enter phone number"></div><div class="ussd-buttons"><button class="ussd-btn cancel" id="ussdCancel">CANCEL</button><button class="ussd-btn send" id="ussdSend">SEND</button></div>`;
+                                $('ussdSend').addEventListener('click', () => { s.phone = $('ussdInp').value; s.step = 1; showUSSD(); });
+                                $('ussdCancel').addEventListener('click', closeUSSD);
+                            } else {
+                                ussdBox.innerHTML = `<div class="ussd-message">Service not available</div><button class="ussd-ok-btn" id="ussdOk">OK</button>`;
+                                $('ussdOk').addEventListener('click', closeUSSD);
+                            }
+                        });
+                        $('ussdCancel').addEventListener('click', closeUSSD);
+                    }
+                }
+            }
+
+            function closeUSSD() { ussdOverlay.classList.remove('active'); currentDialNumber = ''; dialerInput.value = ''; renderRecent(); }
+            function closeDialer() { dialerSlide.classList.remove('active'); }
+            function addRecentCall(num, type) { const c = findContact(num); recentCallsData.unshift({ id: Date.now(), contactId: c?.id, type, time: 'Just now', duration: null }); renderRecent(); }
+            function makeCall() { if (!currentDialNumber) return; if (currentDialNumber.includes('*') || currentDialNumber.includes('#')) executeUSSD(currentDialNumber); else { alert(`Calling ${currentDialNumber}...`); addRecentCall(currentDialNumber, 'outgoing'); closeDialer(); } }
+
+            $('keypadFabBtn').addEventListener('click', () => dialerSlide.classList.add('active'));
+            $('closeDialerBtn').addEventListener('click', closeDialer);
+            $('backBtn').addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'index.html'; });
+            $('clearRecentBtn').addEventListener('click', () => { recentCallsData = []; renderRecent(); });
+            $('addContactBtn').addEventListener('click', () => { const n = prompt('Name:'); if (n) { const p = prompt('Phone:'); if (p) { contactsData.push({ id: contactsData.length + 1, name: n, phone: p, favorite: false, avatar: n.split(' ').map(w => w[0]).join('') }); renderContacts(); } } });
+
+            document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', function () {
+                document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.dataset.tab;
+                recentView.classList.add('hidden'); contactsView.classList.remove('active'); favoritesView.classList.remove('active');
+                if (tab === 'recent') { recentView.classList.remove('hidden'); renderRecent(); }
+                else if (tab === 'contacts') { contactsView.classList.add('active'); renderContacts(); }
+                else if (tab === 'favorites') { favoritesView.classList.add('active'); renderFavorites(); }
+            }));
+
+            buildDialPad();
+            renderRecent();
+            const saved = localStorage.getItem('recentCalls');
+            if (saved) { recentCallsData = JSON.parse(saved); renderRecent(); }
+            window.addEventListener('beforeunload', () => localStorage.setItem('recentCalls', JSON.stringify(recentCallsData)));
+        })();
+    </script>
+    <script src="script.js"></script>
+    <script src="mine.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Google Messages</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #202124;
+        }
+
+        body {
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+
+        /* Main app container – now full screen on mobile */
+        .google-messages {
+            width: 100%;
+            height: 100%;
+            max-width: 450px;
+            /* keeps design proportion on larger screens */
+            max-height: 800px;
+            background: #1f1f1f;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        /* For true mobile fullscreen, remove max constraints */
+        @media (max-width: 450px) {
+            .google-messages {
+                max-width: none;
+                max-height: none;
+            }
+        }
+
+        .messages-header {
+            height: 103px;
+            background: #1f1f1f;
+            border-bottom: 1px solid #3c4043;
+            padding: 8px 16px;
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 48px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-icon {
+            color: #8ab4f8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .app-title {
+            color: #e8eaed;
+            font-size: 22px;
+            font-weight: 400;
+            font-family: 'Google Sans', sans-serif;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-icon {
+            color: #e8eaed;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #8ab4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1f1f1f;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .search-container {
+            padding: 4px 0;
+        }
+
+        .search-bar {
+            background: #3c4043;
+            height: 48px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+
+        .search-bar .material-symbols-outlined {
+            color: #9aa0a6;
+            font-size: 20px;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e8eaed;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: #9aa0a6;
+        }
+
+        .categories {
+            display: flex;
+            padding: 12px 16px 0;
+            gap: 24px;
+            border-bottom: 1px solid #3c4043;
+            background: #1f1f1f;
+        }
+
+        .category {
+            padding-bottom: 12px;
+            color: #9aa0a6;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .category.active {
+            color: #8ab4f8;
+            border-bottom-color: #8ab4f8;
+        }
+
+        .conversations {
+            flex: 1;
+            overflow-y: auto;
+            background: #1f1f1f;
+        }
+
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        .conversation-item:hover {
+            background: #2d2d2d;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 500;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .m-money-avatar {
+            background: #ffcc00 !important;
+            color: #1a1a1a !important;
+        }
+
+        .rcs-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #1a73e8;
+            border-radius: 50%;
+            border: 2px solid #1f1f1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rcs-badge::after {
+            content: "✓";
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .conv-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .conv-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .conv-name {
+            color: #e8eaed;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .conv-time {
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+
+        .conv-bottom {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .last-message {
+            color: #9aa0a6;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .message-status {
+            display: flex;
+            align-items: center;
+            color: #8ab4f8;
+            font-size: 16px;
+        }
+
+        .unread-badge {
+            background: #1a73e8;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: #8ab4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(138, 180, 248, 0.3);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .fab:hover {
+            background: #aecbfa;
+        }
+
+        .fab .material-symbols-outlined {
+            font-size: 24px;
+            color: #1f1f1f;
+        }
+
+        .chat-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: #1f1f1f;
+        }
+
+        .chat-view.active {
+            display: flex;
+        }
+
+        .chat-header {
+            height: 103px;
+            background: #1f1f1f;
+            border-bottom: 1px solid #3c4043;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            color: #8ab4f8;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 16px;
+        }
+
+        .chat-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #5f6368;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .chat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-name {
+            color: #e8eaed;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-status {
+            color: #9aa0a6;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .encryption-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #8ab4f8;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .chat-actions .material-symbols-outlined {
+            color: #e8eaed;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #1f1f1f;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 4px;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .received .bubble {
+            background: #3c4043;
+            color: #e8eaed;
+            border-top-left-radius: 4px;
+        }
+
+        .sent .bubble {
+            background: #1a73e8;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            margin-top: 4px;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            justify-content: flex-end;
+        }
+
+        .read-receipt {
+            font-size: 14px;
+        }
+
+        .date-divider {
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .date-badge {
+            background: #3c4043;
+            color: #e8eaed;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 16px;
+        }
+
+        .input-area {
+            padding: 12px 16px;
+            background: #1f1f1f;
+            border-top: 1px solid #3c4043;
+        }
+
+        .smart-replies {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+
+        .smart-reply {
+            background: #3c4043;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #e8eaed;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .smart-reply:hover {
+            background: #5f6368;
+        }
+
+        .message-input-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .attach-button {
+            color: #8ab4f8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .message-input {
+            flex: 1;
+            background: #3c4043;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 18px;
+            color: #e8eaed;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .message-input::placeholder {
+            color: #9aa0a6;
+        }
+
+        .message-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .send-button {
+            color: #8ab4f8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .send-button.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .shortcode-notice {
+            text-align: center;
+            padding: 8px 16px;
+            color: #9aa0a6;
+            font-size: 12px;
+            border-top: 1px solid #3c4043;
+            background: #1f1f1f;
+        }
+
+        .shortcode-notice a {
+            color: #8ab4f8;
+            text-decoration: none;
+        }
+
+        .shortcode-notice a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .amount-modal {
+            background: #2d2d2d;
+            border-radius: 16px;
+            padding: 24px;
+            width: 350px;
+            max-width: 90%;
+        }
+
+        .modal-title {
+            color: #e8eaed;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: #9aa0a6;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .balance-display {
+            background: #1f1f1f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #8ab4f8;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .amount-input {
+            width: 100%;
+            background: #1f1f1f;
+            border: 1px solid #3c4043;
+            border-radius: 8px;
+            padding: 14px;
+            color: #e8eaed;
+            font-size: 18px;
+            outline: none;
+            margin-bottom: 8px;
+        }
+
+        .amount-input:focus {
+            border-color: #8ab4f8;
+        }
+
+        .max-hint {
+            color: #9aa0a6;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+
+        .modal-btn.primary {
+            background: #8ab4f8;
+            color: #1f1f1f;
+        }
+
+        .modal-btn.secondary {
+            background: #3c4043;
+            color: #e8eaed;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5f6368;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Entire existing HTML structure remains exactly the same, no lines removed -->
+    <div class="google-messages">
+        <div id="mainView">
+            <div class="messages-header">
+                <div class="header-top-row">
+                    <div class="header-left">
+                        <span class="material-symbols-outlined menu-icon">menu</span>
+                        <span class="app-title">Messages</span>
+                    </div>
+                    <div class="header-right">
+                        <span class="material-symbols-outlined header-icon">search</span>
+                        <div class="profile-avatar" id="profileAvatar">M</div>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <div class="search-bar">
+                        <span class="material-symbols-outlined">search</span>
+                        <input type="text" placeholder="Search conversations" id="searchInput">
+                    </div>
+                </div>
+            </div>
+
+            <div class="categories">
+                <div class="category active">All</div>
+                <div class="category">Personal</div>
+                <div class="category">Business</div>
+                <div class="category">Starred</div>
+            </div>
+
+            <div class="conversations" id="conversationList"></div>
+
+            <div class="fab" id="newMessageFab">
+                <span class="material-symbols-outlined">chat_bubble</span>
+            </div>
+        </div>
+
+        <div class="chat-view" id="chatView">
+            <div class="chat-header">
+                <span class="material-symbols-outlined back-button" id="backButton">arrow_back</span>
+                <div class="chat-info">
+                    <div class="chat-avatar m-money-avatar" id="chatAvatar"
+                        style="background: #ffcc00; color: #1a1a1a;">M</div>
+                    <div class="chat-details">
+                        <div class="chat-name">
+                            <span id="chatName">M-Money</span>
+                            <span class="material-symbols-outlined"
+                                style="font-size: 16px; color: #8ab4f8;">verified</span>
+                        </div>
+                        <div class="chat-status" id="chatStatus">
+                            <span>●</span> SMS/MMS
+                        </div>
+                        <div class="encryption-badge" id="encryptionBadge">
+                            <span class="material-symbols-outlined" style="font-size: 12px;">sms</span>
+                            Short code • Cannot reply
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <span class="material-symbols-outlined">call</span>
+                    <span class="material-symbols-outlined">more_vert</span>
+                </div>
+            </div>
+
+            <div class="messages-area" id="messagesContainer"></div>
+
+            <div class="input-area" id="inputArea">
+                <div class="smart-replies" id="smartRepliesContainer"></div>
+                <div class="message-input-container">
+                    <span class="material-symbols-outlined attach-button" style="opacity: 0.3;">add_circle</span>
+                    <input type="text" class="message-input" placeholder="Can't reply to this short code"
+                        id="messageInput" disabled>
+                    <span class="material-symbols-outlined send-button disabled" id="sendButton">send</span>
+                </div>
+            </div>
+
+            <div class="shortcode-notice">
+                <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">info</span>
+                Can't reply to this short code. <a href="#">Learn more</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="amountModal">
+        <div class="amount-modal">
+            <div class="modal-title">MoMo Balance</div>
+            <div class="modal-subtitle">Enter amount to add to your wallet</div>
+            <div class="balance-display" id="currentBalance">Current: 0 RWF</div>
+            <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount" min="0" max="1000000">
+            <div class="max-hint">Maximum: 1,000,000 RWF</div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" id="cancelModal">Cancel</button>
+                <button class="modal-btn primary" id="confirmAmount">Add Funds</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // EXACT SAME JAVASCRIPT – NO LINES REMOVED OR CHANGED
+        (function () {
+            "use strict";
+
+            // Fixed M-Money account
+            const M_MONEY_ACCOUNT = {
+                id: 0,
+                name: 'M-Money',
+                avatar: 'M',
+                lastMessage: 'Transaction alerts and updates',
+                time: 'Just now',
+                unread: 0,
+                rcs: false,
+                online: false,
+                verified: true,
+                isShortCode: true
+            };
+
+            // Random data generators
+            const randomFirstNames = ['Amara', 'Chidi', 'Dayo', 'Efe', 'Folake', 'Gbenga', 'Ife', 'Jelani', 'Kofi', 'Lumusi', 'Makena', 'Ndidi', 'Obi', 'Penda', 'Rudo', 'Sefu', 'Tafari', 'Uchenna', 'Vimbai', 'Wanjiru', 'Yaa', 'Zola'];
+            const randomLastNames = ['Mugisha', 'Ndayishimiye', 'Hakizimana', 'Uwase', 'Iradukunda', 'Mukamana', 'Nsengiyumva', 'Twagirayezu', 'Niyonzima', 'Uwimana'];
+
+            function generateRandomName() {
+                const first = randomFirstNames[Math.floor(Math.random() * randomFirstNames.length)];
+                const last = randomLastNames[Math.floor(Math.random() * randomLastNames.length)];
+                return `${first} ${last}`;
+            }
+
+            const rwandanMessages = [
+                'Muraho! Amakuru?', 'Ni meza, murakoze!', 'Turaza guhura ryari?',
+                'Ndashaka kukubaza ikibazo', 'Yego, umbwire', 'Mwaramutse!',
+                'Ubu ndi i Kigali', 'Tuzabonana ejo', 'Urakoze cyane'
+            ];
+
+            const timeOptions = ['2 min', '5 min', '15 min', '30 min', '1 hr', '2 hr', '3 hr', 'Yesterday'];
+
+            function generateConversations() {
+                const count = Math.floor(Math.random() * 4) + 4;
+                const convs = [];
+                const usedNames = new Set();
+
+                for (let i = 0; i < count; i++) {
+                    let name = generateRandomName();
+                    while (usedNames.has(name)) name = generateRandomName();
+                    usedNames.add(name);
+
+                    const initials = name.split(' ').map(n => n[0]).join('');
+                    const lastMsg = rwandanMessages[Math.floor(Math.random() * rwandanMessages.length)];
+                    const time = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+                    const unread = Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0;
+                    const rcs = Math.random() > 0.3;
+                    const online = Math.random() > 0.5;
+                    const verified = Math.random() > 0.3;
+
+                    convs.push({
+                        id: i + 1,
+                        name,
+                        avatar: initials,
+                        lastMessage: lastMsg,
+                        time,
+                        unread,
+                        rcs,
+                        online,
+                        verified,
+                        isShortCode: false
+                    });
+                }
+
+                return convs;
+            }
+
+            function generateMessages(convId) {
+                const count = Math.floor(Math.random() * 6) + 3;
+                const msgs = [];
+
+                for (let i = 0; i < count; i++) {
+                    const text = rwandanMessages[Math.floor(Math.random() * rwandanMessages.length)];
+                    const sent = Math.random() > 0.5;
+                    const hour = Math.floor(Math.random() * 12) + 8;
+                    const minute = Math.floor(Math.random() * 60);
+                    const time = `${hour}:${minute.toString().padStart(2, '0')}`;
+                    const status = sent ? (Math.random() > 0.5 ? 'read' : 'delivered') : null;
+
+                    msgs.push({ text, sent, time, status });
+                }
+
+                return msgs;
+            }
+
+            // Load M-Money messages from localStorage
+            function loadMMoneyMessages() {
+                const saved = localStorage.getItem('mMoneyMessages');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+                const defaultMsgs = [
+                    { text: 'Welcome to MTN Mobile Money. Your balance is 45,000 RWF.', sent: false, time: '10:30', status: 'delivered' },
+                    { text: 'Dial *182# for services. Send money, buy airtime, pay bills and more.', sent: false, time: '10:31', status: 'delivered' }
+                ];
+                saveMMoneyMessages(defaultMsgs);
+                return defaultMsgs;
+            }
+
+            function saveMMoneyMessages(msgs) {
+                localStorage.setItem('mMoneyMessages', JSON.stringify(msgs));
+            }
+
+            let conversations = [];
+            let messages = {};
+            let currentChat = null;
+            let typingTimer = null;
+
+            function initializeData() {
+                const otherConvs = generateConversations();
+                conversations = [M_MONEY_ACCOUNT, ...otherConvs];
+
+                messages[0] = loadMMoneyMessages();
+
+                otherConvs.forEach(conv => {
+                    messages[conv.id] = generateMessages(conv.id);
+                });
+            }
+
+            initializeData();
+
+            const mainView = document.getElementById('mainView');
+            const chatView = document.getElementById('chatView');
+            const convList = document.getElementById('conversationList');
+            const msgContainer = document.getElementById('messagesContainer');
+            const chatName = document.getElementById('chatName');
+            const chatAvatar = document.getElementById('chatAvatar');
+            const chatStatus = document.getElementById('chatStatus');
+            const encryptionBadge = document.getElementById('encryptionBadge');
+            const msgInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendButton');
+            const backBtn = document.getElementById('backButton');
+            const newFab = document.getElementById('newMessageFab');
+            const searchInput = document.getElementById('searchInput');
+            const profileAvatar = document.getElementById('profileAvatar');
+            const amountModal = document.getElementById('amountModal');
+            const amountInput = document.getElementById('amountInput');
+            const currentBalance = document.getElementById('currentBalance');
+            const cancelModal = document.getElementById('cancelModal');
+            const confirmAmount = document.getElementById('confirmAmount');
+            const smartRepliesContainer = document.getElementById('smartRepliesContainer');
+
+            function getColor(name) {
+                const colors = ['#1a73e8', '#c5221f', '#e37400', '#0d652d', '#9334e6', '#1967d2'];
+                let hash = 0;
+                for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                return colors[Math.abs(hash) % colors.length];
+            }
+
+            function loadBalance() {
+                const balance = localStorage.getItem('momoBalance') || '45000';
+                currentBalance.textContent = `Current: ${parseInt(balance).toLocaleString()} RWF`;
+                return parseInt(balance);
+            }
+
+            function saveBalance(amount) {
+                localStorage.setItem('momoBalance', amount);
+                loadBalance();
+            }
+
+            // Add new transaction to M-Money
+            function addMMoneyTransaction(transactionData) {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+                let messageText;
+                if (typeof transactionData === 'string') {
+                    messageText = transactionData;
+                } else {
+                    const { amount, name, phone, newBalance } = transactionData;
+                    const dateStr = now.toISOString().split('T')[0];
+                    const timeFull = now.toTimeString().split(' ')[0];
+                    messageText = `*165*S*${amount} RWF transferred to ${name} (0${phone}) at ${dateStr} ${timeFull}. Fee: 20 RWF. Balance: ${newBalance} RWF. Dial *182*1*3# and send money abroad *RW#`;
+                }
+
+                const newMsg = {
+                    text: messageText,
+                    sent: false,
+                    time: timeStr,
+                    status: 'delivered'
+                };
+
+                messages[0].push(newMsg);
+                saveMMoneyMessages(messages[0]);
+
+                M_MONEY_ACCOUNT.lastMessage = messageText.substring(0, 50) + (messageText.length > 50 ? '...' : '');
+                M_MONEY_ACCOUNT.time = 'Just now';
+                M_MONEY_ACCOUNT.unread = (M_MONEY_ACCOUNT.unread || 0) + 1;
+
+                renderConversations(searchInput.value);
+
+                if (currentChat === 0) {
+                    renderMessages(0);
+                    setTimeout(() => msgContainer.scrollTop = msgContainer.scrollHeight, 50);
+                }
+
+                return true;
+            }
+
+            // Process pending messages from localStorage
+            function processPendingMessages() {
+                const pending = localStorage.getItem('pendingMMoneyMessages');
+                if (pending) {
+                    try {
+                        const messages = JSON.parse(pending);
+                        const now = Date.now();
+                        // Process messages from last 30 seconds
+                        const recentMessages = messages.filter(m => now - m.timestamp < 30000);
+
+                        recentMessages.forEach(m => {
+                            addMMoneyTransaction(m.data);
+                        });
+
+                        // Keep only processed/old messages
+                        const remaining = messages.filter(m => now - m.timestamp >= 30000);
+                        localStorage.setItem('pendingMMoneyMessages', JSON.stringify(remaining));
+
+                        // If there were new messages, open M-Money chat
+                        if (recentMessages.length > 0) {
+                            setTimeout(() => openChat(0), 100);
+                        }
+                    } catch (e) {
+                        console.error('Error processing pending messages:', e);
+                    }
+                }
+
+                // Also check last transaction
+                const lastTransaction = localStorage.getItem('lastMMoneyTransaction');
+                if (lastTransaction) {
+                    try {
+                        const data = JSON.parse(lastTransaction);
+                        const lastTime = parseInt(localStorage.getItem('lastTransactionTime') || '0');
+                        if (Date.now() - lastTime < 30000) {
+                            // Already processed in pending, just open chat
+                            setTimeout(() => openChat(0), 100);
+                        }
+                    } catch (e) { }
+                }
+            }
+
+            function renderConversations(search = '') {
+                const filtered = conversations.filter(c =>
+                    c.name.toLowerCase().includes(search.toLowerCase()) ||
+                    c.lastMessage.toLowerCase().includes(search.toLowerCase())
+                );
+
+                filtered.sort((a, b) => {
+                    if (a.id === 0) return -1;
+                    if (b.id === 0) return 1;
+                    return 0;
+                });
+
+                convList.innerHTML = filtered.map(c => `
+                    <div class="conversation-item" data-id="${c.id}">
+                        <div class="avatar ${c.id === 0 ? 'm-money-avatar' : ''}" style="background: ${c.id === 0 ? '#ffcc00' : getColor(c.name)}">
+                            ${c.avatar}
+                            ${c.rcs ? '<div class="rcs-badge"></div>' : ''}
+                        </div>
+                        <div class="conv-details">
+                            <div class="conv-top">
+                                <div class="conv-name">
+                                    ${c.name}
+                                    ${c.verified ? '<span class="material-symbols-outlined" style="font-size: 14px; color: #8ab4f8;">check_circle</span>' : ''}
+                                </div>
+                                <div class="conv-time">${c.time}</div>
+                            </div>
+                            <div class="conv-bottom">
+                                <div class="last-message">${c.unread ? '● ' : ''}${c.lastMessage}</div>
+                                ${c.rcs ? '<div class="message-status">✓✓</div>' : ''}
+                                ${c.unread ? `<div class="unread-badge">${c.unread}</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.conversation-item').forEach(el => {
+                    el.addEventListener('click', () => openChat(parseInt(el.dataset.id)));
+                });
+            }
+
+            function openChat(id) {
+                const conv = conversations.find(c => c.id === id);
+                if (!conv) return;
+
+                currentChat = id;
+                conv.unread = 0;
+
+                if (id === 0) {
+                    saveMMoneyMessages(messages[0]);
+                }
+
+                chatName.textContent = conv.name;
+                chatAvatar.textContent = conv.avatar;
+
+                if (id === 0) {
+                    chatAvatar.style.background = '#ffcc00';
+                    chatAvatar.style.color = '#1a1a1a';
+                    chatStatus.innerHTML = '<span>●</span> SMS/MMS • Short code';
+                    encryptionBadge.innerHTML = '<span class="material-symbols-outlined" style="font-size: 12px;">sms</span> Short code • Cannot reply';
+                    msgInput.disabled = true;
+                    msgInput.placeholder = "Can't reply to this short code";
+                    sendBtn.classList.add('disabled');
+                    smartRepliesContainer.style.display = 'none';
+                } else {
+                    chatAvatar.style.background = getColor(conv.name);
+                    chatAvatar.style.color = 'white';
+                    chatStatus.innerHTML = conv.online ? '<span>●</span> Online • RCS chat' : 'RCS chat';
+                    encryptionBadge.innerHTML = '<span class="material-symbols-outlined" style="font-size: 12px;">lock</span> End-to-end encrypted';
+                    msgInput.disabled = false;
+                    msgInput.placeholder = "RCS message";
+                    sendBtn.classList.remove('disabled');
+                    smartRepliesContainer.style.display = 'flex';
+                    smartRepliesContainer.innerHTML = `
+                        <div class="smart-reply" data-reply="Muraho! 👋">Muraho! 👋</div>
+                        <div class="smart-reply" data-reply="Amakuru? 😊">Amakuru? 😊</div>
+                        <div class="smart-reply" data-reply="Murakoze! 🙏">Murakoze! 🙏</div>
+                    `;
+                    document.querySelectorAll('.smart-reply').forEach(el => {
+                        el.addEventListener('click', () => {
+                            msgInput.value = el.dataset.reply;
+                            msgInput.focus();
+                        });
+                    });
+                }
+
+                renderMessages(id);
+                mainView.style.display = 'none';
+                chatView.classList.add('active');
+
+                setTimeout(() => msgContainer.scrollTop = msgContainer.scrollHeight, 50);
+            }
+
+            function renderMessages(id) {
+                const msgs = messages[id] || [];
+
+                let html = '<div class="date-divider"><span class="date-badge">Today</span></div>';
+
+                msgs.forEach(m => {
+                    html += `
+                        <div class="message ${m.sent ? 'sent' : 'received'}">
+                            <div class="bubble">
+                                ${m.text.replace(/\n/g, '<br>')}
+                                <div class="message-time">
+                                    ${m.time}
+                                    ${m.sent ? `<span class="read-receipt">${m.status === 'read' ? '✓✓' : '✓'}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                msgContainer.innerHTML = html;
+            }
+
+            function sendMessage() {
+                if (currentChat === 0) return;
+
+                const text = msgInput.value.trim();
+                if (!text || currentChat === null) return;
+
+                const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                const newMsg = { text, sent: true, time, status: 'sent' };
+
+                if (!messages[currentChat]) messages[currentChat] = [];
+                messages[currentChat].push(newMsg);
+
+                const conv = conversations.find(c => c.id === currentChat);
+                if (conv) {
+                    conv.lastMessage = text;
+                    conv.time = 'Now';
+                }
+
+                msgInput.value = '';
+                renderMessages(currentChat);
+                renderConversations(searchInput.value);
+
+                setTimeout(() => msgContainer.scrollTop = msgContainer.scrollHeight, 20);
+
+                if (conv?.rcs) {
+                    if (typingTimer) clearTimeout(typingTimer);
+                    typingTimer = setTimeout(() => {
+                        const replies = ['Yego, nibyo! 👍', 'Murakoze! 🙏', 'Tuzabonana!', 'Amakuru meza! 😊'];
+                        const reply = replies[Math.floor(Math.random() * replies.length)];
+                        const replyTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+                        messages[currentChat].push({ text: reply, sent: false, time: replyTime, status: 'delivered' });
+                        conv.lastMessage = reply;
+                        conv.time = 'Now';
+                        conv.unread = 1;
+
+                        renderMessages(currentChat);
+                        renderConversations(searchInput.value);
+
+                        setTimeout(() => msgContainer.scrollTop = msgContainer.scrollHeight, 20);
+                        typingTimer = null;
+                    }, 1500);
+                }
+            }
+
+            profileAvatar.addEventListener('click', () => {
+                amountModal.classList.add('active');
+                amountInput.value = '';
+                loadBalance();
+            });
+
+            cancelModal.addEventListener('click', () => {
+                amountModal.classList.remove('active');
+            });
+
+            confirmAmount.addEventListener('click', () => {
+                let amount = parseInt(amountInput.value);
+
+                if (isNaN(amount) || amount < 0) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+
+                if (amount > 1000000) {
+                    alert('Maximum amount is 1,000,000 RWF');
+                    amount = 1000000;
+                }
+
+                const current = parseInt(localStorage.getItem('momoBalance') || '45000');
+                const newBalance = current + amount;
+                saveBalance(newBalance);
+
+                amountModal.classList.remove('active');
+                alert(`Successfully added ${amount.toLocaleString()} RWF. New balance: ${newBalance.toLocaleString()} RWF`);
+            });
+
+            amountModal.addEventListener('click', (e) => {
+                if (e.target === amountModal) {
+                    amountModal.classList.remove('active');
+                }
+            });
+
+            amountInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    confirmAmount.click();
+                }
+            });
+
+            sendBtn.addEventListener('click', sendMessage);
+
+            msgInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter' && currentChat !== 0) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            backBtn.addEventListener('click', () => {
+                chatView.classList.remove('active');
+                mainView.style.display = 'block';
+                currentChat = null;
+                renderConversations(searchInput.value);
+            });
+
+            newFab.addEventListener('click', () => {
+                window.location.href = 'dial.html';
+            });
+
+            searchInput.addEventListener('input', e => renderConversations(e.target.value));
+
+            document.querySelectorAll('.category').forEach(cat => {
+                cat.addEventListener('click', function () {
+                    document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Initialize
+            renderConversations();
+            loadBalance();
+
+            // Process pending messages and open M-Money chat if there are new ones
+            processPendingMessages();
+
+            // Check for new messages periodically
+            setInterval(processPendingMessages, 2000);
+        })();
+    </script>
+    <script src="script.js"></script>
+    <script src="mine.js"></script>
+</body>
+
+</html>
