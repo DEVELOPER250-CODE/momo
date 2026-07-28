@@ -12,43 +12,31 @@ var KotWebPay = {
         var onSuccess = opts.onSuccess || function(){};
         var onError = opts.onError || function(){};
 
-        var payload = {
-            amount: amount,
-            phone: phone,
-            name: name,
-            weeks: weeks,
-            client_token: MOMO_Utils.genToken()
-        };
-
         fetch(MOMO_CONFIG.API_BASE + '/init-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                amount: amount,
+                phone: phone,
+                name: name,
+                weeks: weeks
+            })
         })
-        .then(function(res) {
-            if (!res.ok) {
-                return res.json().then(function(err) {
-                    throw new Error(err.error || 'Server error');
-                });
-            }
-            return res.json();
-        })
+        .then(function(res) { return res.json(); })
         .then(function(data) {
             if (data.success) {
                 self.currentRef = data.reference;
                 self.currentAmount = amount;
                 self.currentWeeks = weeks;
                 MOMO_Utils.saveContrib(amount, data.reference, weeks);
-                
                 if (data.payment_url) {
                     onSuccess({ payment_url: data.payment_url, reference: data.reference });
                 } else {
-                    // USSD push — payment already initiated on phone
+                    onSuccess({ reference: data.reference });
                     self.pollVerification(data.reference, amount, weeks);
-                    onSuccess({ payment_url: null, reference: data.reference });
                 }
             } else {
-                onError(new Error(data.error || 'Payment initiation failed'));
+                onError(new Error(data.error || 'Failed'));
             }
         })
         .catch(function(err) {
@@ -57,13 +45,10 @@ var KotWebPay = {
     },
 
     pollVerification: function(reference, amount, weeks) {
-        var self = this;
         var attempts = 0;
         var maxAttempts = Math.floor(MOMO_CONFIG.POLL_TIMEOUT / MOMO_CONFIG.POLL_INTERVAL);
-
         var poll = setInterval(function() {
             attempts++;
-
             fetch(MOMO_CONFIG.API_BASE + '/verify-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -71,23 +56,16 @@ var KotWebPay = {
             })
             .then(function(res) { return res.json(); })
             .then(function(data) {
-                if (data.verified && data.status === 'completed') {
+                if (data.verified) {
                     clearInterval(poll);
                     MOMO_Utils.saveContrib(amount, reference, weeks);
                     window.location.href = window.location.pathname + '?status=successful&reference=' + reference + '&amount=' + amount;
                 } else if (data.status === 'failed') {
                     clearInterval(poll);
-                    window.location.href = window.location.pathname + '?status=failed';
                 }
             })
-            .catch(function() {
-                // Network error — keep polling
-            });
-
-            if (attempts >= maxAttempts) {
-                clearInterval(poll);
-                console.log('Polling timeout: ' + reference);
-            }
+            .catch(function() {});
+            if (attempts >= maxAttempts) clearInterval(poll);
         }, MOMO_CONFIG.POLL_INTERVAL);
     }
 };
