@@ -13,11 +13,6 @@
       "maxDuration": 10
     }
   },
-  "rewrites": [
-    { "source": "/api/init-payment", "destination": "/api/init-payment" },
-    { "source": "/api/webhook", "destination": "/api/webhook" },
-    { "source": "/api/verify-payment", "destination": "/api/verify-payment" }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
