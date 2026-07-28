@@ -1,5 +1,4 @@
 var MOMO_CONFIG = {
-    // Your Vercel serverless functions (no keys exposed!)
     API_BASE: '/api',
     
     CONTRIB_TIERS: {
