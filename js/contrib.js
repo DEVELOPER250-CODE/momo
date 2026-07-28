@@ -1,38 +1,11 @@
-// MoMo Payment Tester — Contribution Tracker (no accounts)
-(function() {
+(function(){
     'use strict';
-    
-    // Check if user previously contributed
-    function checkPreviousContrib() {
-        try {
-            var raw = localStorage.getItem('momo_contrib');
-            if (!raw) return null;
-            return JSON.parse(atob(raw));
-        } catch(e) {
-            return null;
-        }
+    function get(){try{var r=localStorage.getItem('momo_v2_contrib');return r?JSON.parse(atob(r)):null;}catch(e){return null;}}
+    var prev=get();
+    if(prev&&prev.freeUntil&&Date.now()<prev.freeUntil){
+        var rem=Math.max(0,Math.ceil((prev.freeUntil-Date.now())/(1000*60*60*24*7)));
+        console.log((prev.elite?'👑 Elite':'🎁')+' Ufite ibyumweru '+rem+' bisigaye ku buntu!');
     }
-    
-    var prev = checkPreviousContrib();
-    
-    if (prev && prev.amount >= 10000) {
-        var remaining = prev.earlyAccessUntil ? Math.max(0, Math.ceil((prev.earlyAccessUntil - Date.now()) / (1000 * 60 * 60 * 24))) : 0;
-        if (remaining > 0) {
-            console.log('🏆 Ufite Early Access! Iminsi isigaye: ' + remaining);
-            // Could show a special banner here
-        }
-    }
-    
-    if (prev) {
-        console.log('💜 Washyizeho inkunga ya ' + prev.amount.toLocaleString() + ' RWF — Murakoze!');
-    }
-    
-    // Expose to window
-    window.MOMO_Contrib = {
-        getPrevious: checkPreviousContrib,
-        hasEarlyAccess: function() {
-            var p = checkPreviousContrib();
-            return p && p.earlyAccess && p.earlyAccessUntil > Date.now();
-        }
-    };
+    if(prev) console.log('💜 Washyizeho inkunga ya '+prev.amount.toLocaleString()+' RWF');
+    window.MOMO_Contrib={get:get,hasFree:function(){var p=get();return p&&p.freeUntil&&Date.now()<p.freeUntil;},weeksLeft:function(){var p=get();if(!p||!p.freeUntil)return 0;return Math.max(0,Math.ceil((p.freeUntil-Date.now())/(1000*60*60*24*7)));}};
 })();
