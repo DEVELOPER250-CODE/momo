@@ -8,56 +8,33 @@ export default async function handler(req, res) {
 
     try {
         const { amount, phone, name, weeks } = req.body;
-
         if (!amount || !phone || !name) {
             return res.status(400).json({ error: 'Amount, phone, and name required' });
         }
 
         const txRef = 'MOMOV2_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-        const webhookUrl = 'https://momorw.vercel.app/api/webhook';
         const returnUrl = (req.headers.origin || 'https://momorw.vercel.app') + '/?status=successful&reference=' + txRef + '&amount=' + amount;
+        const webhookUrl = 'https://momorw.vercel.app/api/webhook';
 
-        const body = JSON.stringify({
-            amount: amount,
-            phone_number: phone,
+        const checkoutUrl = 'https://rwandapay.rw/payment?' + new URLSearchParams({
+            amount: amount.toString(),
+            phone: phone,
+            name: name,
+            ref: txRef,
             currency: 'RWF',
-            tx_ref: txRef,
-            customer_name: name,
-            description: 'MoMo Tester v2.0',
-            payment_method: 'momo',
-            webhook_url: webhookUrl,
-            return_url: returnUrl
+            description: 'MoMo Tester v2.0 - ' + (weeks || 0) + ' weeks free',
+            return_url: returnUrl,
+            webhook: webhookUrl,
+            public_key: process.env.RWANDAPAY_PUBLIC_KEY || ''
+        }).toString();
+
+        return res.status(200).json({
+            success: true,
+            payment_url: checkoutUrl,
+            reference: txRef
         });
-
-        const response = await fetch('https://api.rwandapay.rw/v1/payments', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + process.env.RWANDAPAY_SECRET_KEY
-            },
-            body: body
-        });
-
-        const text = await response.text();
-        console.log('RwandaPay response:', response.status, text.substring(0, 500));
-
-        let data;
-        try { data = JSON.parse(text); } catch (e) {
-            return res.status(502).json({ error: 'Invalid response from RwandaPay' });
-        }
-
-        if (data.status === 'success' || data.success) {
-            return res.status(200).json({
-                success: true,
-                payment_url: data.data?.payment_url || data.payment_url || null,
-                reference: txRef
-            });
-        }
-
-        return res.status(400).json({ error: data.message || 'Payment failed' });
 
     } catch (error) {
-        console.error('Error:', error.message);
         return res.status(500).json({ error: 'Server error' });
     }
 }
