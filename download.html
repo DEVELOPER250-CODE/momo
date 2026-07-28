@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MOMO Payment Tester · Direct Download</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        .page-wrap {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* TOP AD ROW */
+        .ad-top-row {
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        /* MIDDLE SECTION: left ads + main + right ads */
+        .middle-flex {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+        .ad-left-col {
+            flex: 0 0 180px;
+            background: white;
+            border-right: 2px solid #e0e0e0;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .ad-right-col {
+            flex: 0 0 180px;
+            background: white;
+            border-left: 2px solid #e0e0e0;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .main-core {
+            flex: 1;
+            max-width: 520px;
+            width: 100%;
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 32px 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 28px;
+        }
+        .agreement-box {
+            margin: 24px 0;
+            border: 1px solid #e8e8e8;
+            padding: 20px;
+            background: #fafafa;
+        }
+        .waiver-en {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c62828;
+            margin-bottom: 12px;
+        }
+        .waiver-rw {
+            font-size: 12px;
+            color: #757575;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 10px;
+        }
+        .checkbox-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .checkbox-flex input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-flex label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+        .download-btn {
+            width: 100%;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: not-allowed;
+            opacity: 0.6;
+            border-radius: 40px;
+            margin-top: 16px;
+            transition: 0.2s;
+        }
+        .download-btn.active {
+            opacity: 1;
+            cursor: pointer;
+        }
+        .download-btn.active:hover {
+            background: #1557b0;
+        }
+        .ad-bottom-row {
+            background: white;
+            border-top: 2px solid #e0e0e0;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: auto;
+        }
+        .ad-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 6px;
+        }
+        .ad-label {
+            font-size: 9px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+        @media (max-width: 1000px) {
+            .ad-left-col, .ad-right-col { display: none; }
+            .middle-flex { padding: 20px; }
+        }
+        @media (max-width: 640px) {
+            .main-core { padding: 24px 18px; }
+            .title { font-size: 20px; }
+        }
+        .floating-ad-corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            background: white;
+            border: 3px solid #ff9900;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            padding: 8px;
+        }
+        @media (max-width: 700px) { .floating-ad-corner { display: none; } }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+    <!-- TOP ADS -->
+    <div class="ad-top-row" id="topAdZone"></div>
+
+    <div class="middle-flex">
+        <!-- LEFT ADS -->
+        <div class="ad-left-col" id="leftAdZone"></div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-core">
+            <div class="title">MOMO payment tester</div>
+            <div class="agreement-box">
+                <div class="waiver-en">All ethical or unethical use of the app concerns you, We are not responsible.</div>
+                <div class="waiver-rw">Imikoreshereze iyiyi application yose yabaikwiye cg idakwiye birakureba, Ntabwo tugushinzwe.</div>
+                <div class="checkbox-flex">
+                    <input type="checkbox" id="liabilityConsent">
+                    <label for="liabilityConsent">I understand and accept full responsibility</label>
+                </div>
+            </div>
+            <button id="downloadBtn" class="download-btn" disabled>DOWNLOAD APK</button>
+        </div>
+
+        <!-- RIGHT ADS -->
+        <div class="ad-right-col" id="rightAdZone"></div>
+    </div>
+
+    <!-- BOTTOM ADS -->
+    <div class="ad-bottom-row" id="bottomAdZone"></div>
+</div>
+
+<!-- FLOATING EXTRA AD -->
+<div class="floating-ad-corner" id="floatingCornerAd"></div>
+
+<!-- ========== ALL BANNER ADS (NO POPUNDERS, NO SMART LINKS) ========== -->
+<script>
+    (function() {
+        // All ad codes (only banners, no redirects)
+        const rawAds = [
+            '<script src="https://pl29195357.profitablecpmratenetwork.com/83/db/be/83dbbe29651b99e65065e3e824eea8a3.js"><\/script>',
+            '<script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"><\/script><div id="container-d0ef7e24e59d97ae27dc17b02b6bd298"></div>',
+            '<script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"><\/script><div id="container-d0ef7e24e59d97ae27dc17b02b6bd298_2"></div>',
+            '<script src="https://pl29195360.profitablecpmratenetwork.com/27/f7/78/27f778cf345ca592572e38530a63623a.js"><\/script>',
+            '<script> atOptions = { "key" : "200f45d0f6d22b28f8e62ea648bbfae8", "format" : "iframe", "height" : 50, "width" : 320, "params" : {} }; <\/script><script src="https://www.highperformanceformat.com/200f45d0f6d22b28f8e62ea648bbfae8/invoke.js"><\/script>',
+            '<script> atOptions = { "key" : "2354b72d67982a845d2687d7b1aba02c", "format" : "iframe", "height" : 600, "width" : 160, "params" : {} }; <\/script><script src="https://www.highperformanceformat.com/2354b72d67982a845d2687d7b1aba02c/invoke.js"><\/script>',
+            '<script> atOptions = { "key" : "7353918759c3baaffd8a5a8dfaf04db7", "format" : "iframe", "height" : 300, "width" : 160, "params" : {} }; <\/script><script src="https://www.highperformanceformat.com/7353918759c3baaffd8a5a8dfaf04db7/invoke.js"><\/script>',
+            '<script> atOptions = { "key" : "6c2bc9c68509d052c258b5cf8c953b46", "format" : "iframe", "height" : 60, "width" : 468, "params" : {} }; <\/script><script src="https://www.highperformanceformat.com/6c2bc9c68509d052c258b5cf8c953b46/invoke.js"><\/script>',
+            '<script> atOptions = { "key" : "d0bea99e4de8e858cd75e891bd760ee4", "format" : "iframe", "height" : 250, "width" : 300, "params" : {} }; <\/script><script src="https://www.highperformanceformat.com/d0bea99e4de8e858cd75e891bd760ee4/invoke.js"><\/script>',
+            '<script src="https://www.profitablecpmratenetwork.com/cb0hf18pyv?key=bafca383b6999eefe362e38921231edc"><\/script>'
+        ];
+
+        function injectMultiple(containerId, adArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            adArray.forEach(adCode => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ad-unit';
+                const label = document.createElement('div');
+                label.className = 'ad-label';
+                label.innerText = '⚡ ADVERTISEMENT ⚡';
+                wrapper.appendChild(label);
+                const adInner = document.createElement('div');
+                adInner.innerHTML = adCode;
+                wrapper.appendChild(adInner);
+                container.appendChild(wrapper);
+            });
+        }
+
+        const screenW = window.innerWidth;
+
+        // TOP: heavy banners
+        let topAds = [rawAds[0], rawAds[3], rawAds[4], rawAds[7]];
+        if (screenW < 768) topAds = [rawAds[0], rawAds[4], rawAds[7]];
+        injectMultiple('topAdZone', topAds);
+
+        // BOTTOM: overload
+        let bottomAds = [rawAds[1], rawAds[8], rawAds[2], rawAds[5], rawAds[9]];
+        injectMultiple('bottomAdZone', bottomAds);
+
+        // LEFT COLUMN
+        let leftAds = [rawAds[5], rawAds[6], rawAds[5], rawAds[0]];
+        injectMultiple('leftAdZone', leftAds);
+
+        // RIGHT COLUMN
+        let rightAds = [rawAds[2], rawAds[9], rawAds[8], rawAds[6]];
+        injectMultiple('rightAdZone', rightAds);
+
+        // FLOATING CORNER AD
+        const floatContainer = document.getElementById('floatingCornerAd');
+        if (floatContainer) {
+            const floatWrapper = document.createElement('div');
+            floatWrapper.className = 'ad-unit';
+            floatWrapper.innerHTML = '<div class="ad-label">🔥 SPECIAL OFFER 🔥</div>' + rawAds[4];
+            floatContainer.appendChild(floatWrapper);
+            const floatWrapper2 = document.createElement('div');
+            floatWrapper2.className = 'ad-unit';
+            floatWrapper2.style.marginTop = '10px';
+            floatWrapper2.innerHTML = '<div class="ad-label">💸 HIGH CPM BANNER</div>' + rawAds[8];
+            floatContainer.appendChild(floatWrapper2);
+        }
+
+        // No popunders, no smart links, no redirects - only banners
+        // Optional: preload nothing that redirects
+    })();
+</script>
+
+<!-- Additional direct banner scripts (no redirects) -->
+<script async="async" data-cfasync="false" src="https://pl29195358.profitablecpmratenetwork.com/d0ef7e24e59d97ae27dc17b02b6bd298/invoke.js"></script>
+<script src="https://pl29195360.profitablecpmratenetwork.com/27/f7/78/27f778cf345ca592572e38530a63623a.js" async></script>
+<script src="https://www.profitablecpmratenetwork.com/cb0hf18pyv?key=bafca383b6999eefe362e38921231edc" async></script>
+
+<!-- ========== DIRECT DOWNLOAD (NO REDIRECTS) ========== -->
+<script>
+    (function() {
+        const checkbox = document.getElementById('liabilityConsent');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const DIRECT_DOWNLOAD_URL = "./MoMo.apk";
+
+        function updateButtonState() {
+            if (checkbox && checkbox.checked) {
+                downloadBtn.disabled = false;
+                downloadBtn.classList.add('active');
+            } else {
+                downloadBtn.disabled = true;
+                downloadBtn.classList.remove('active');
+            }
+        }
+
+        if (checkbox) {
+            checkbox.addEventListener('change', updateButtonState);
+            updateButtonState();
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (!checkbox.checked) {
+                    alert("⚠️ You must accept the responsibility agreement to download.");
+                    return false;
+                }
+                // Direct download using iframe method - works on all phones, no new tab
+                let iframe = document.getElementById('downloadFrame');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'downloadFrame';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                }
+                iframe.src = DIRECT_DOWNLOAD_URL;
+                return false;
+            });
+        }
+    })();
+</script>
+
+</body>
+</html>
