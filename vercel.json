@@ -1,0 +1,31 @@
+{
+  "functions": {
+    "api/init-payment.js": {
+      "memory": 128,
+      "maxDuration": 10
+    },
+    "api/webhook.js": {
+      "memory": 128,
+      "maxDuration": 10
+    },
+    "api/verify-payment.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    { "source": "/api/init-payment", "destination": "/api/init-payment" },
+    { "source": "/api/webhook", "destination": "/api/webhook" },
+    { "source": "/api/verify-payment", "destination": "/api/verify-payment" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization, X-Rwandapay-Signature" }
+      ]
+    }
+  ]
+}
