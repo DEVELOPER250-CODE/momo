@@ -3,266 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>MoMo Payment Tester v2.0 — Tera Inkunga</title>
-    <meta name="description" content="Tera inkunga MoMo Payment Tester v2.0. Hitamo umubare w'amafaranga ushaka gutanga.">
+    <title>MoMo Payment Tester v2.0 — Tera Inkunga · Ubwishyu</title>
+    <meta name="description" content="MoMo Payment Tester v2.0 irazaza. Tera inkunga ubone ubwishyu bwihariye — Advanced Messages, Notification Sender, n'ibindi byinshi.">
     <meta property="og:title" content="MoMo Payment Tester v2.0 — Tera Inkunga">
-    <meta property="og:description" content="Tera inkunga MoMo Payment Tester v2.0. Hitamo umubare w'amafaranga ushaka gutanga.">
+    <meta property="og:description" content="Tera inkunga ubone v2.0 Premium. Advanced Messages, UI nshya, Notification Sender — byose birazaza.">
     <meta property="og:type" content="website">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            --bg-main: #f4f2ee;
-            --bg-surface: #ffffff;
-            --bg-hover: #f9fafb;
-            --bg-input: #eef3f8;
-            --border: #e5e7eb;
-            --text-primary: #191919;
-            --text-secondary: #595856;
-            --text-tertiary: #868482;
-            --primary: #6c47ff;
-            --primary-hover: #5835e8;
-            --primary-light: #f0ebff;
-            --success: #057642;
-            --success-bg: #e9f7ef;
-            --danger: #d11124;
-            --danger-bg: #fdecea;
-            --warning: #b85c00;
-            --warning-bg: #fff8f0;
-            --gold: #e8a838;
-            --gold-text: #b87a14;
-            --accent: #ff6b35;
-            --accent-light: #fff3ee;
-            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            --radius-sm: 0.375rem;
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-            --radius-xl: 1rem;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+            --bg: #0a0a0f;
+            --bg-card: #13131a;
+            --bg-card-hover: #1a1a24;
+            --bg-input: #1e1e2a;
+            --border: #262632;
+            --border-active: #7c3aed;
+            --text: #f4f4f6;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #6b6b78;
+            --primary: #7c3aed;
+            --primary-glow: #a78bfa;
+            --primary-hover: #6d28d9;
+            --accent: #f59e0b;
+            --accent-glow: #fbbf24;
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --gold: #f59e0b;
+            --gold-bg: rgba(245, 158, 11, 0.08);
+            --platinum: #e2e8f0;
+            --platinum-bg: rgba(226, 232, 240, 0.06);
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
             --radius-full: 9999px;
-            --radius-2xl: 1.5rem;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow: 0 4px 16px rgba(0,0,0,0.4);
+            --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.15);
+            --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
         }
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html { -webkit-font-smoothing: antialiased; font-size: 16px; scroll-behavior: smooth; }
         body {
-            font-family: var(--font-family);
-            background: var(--bg-main);
-            color: var(--text-primary);
-            line-height: 1.5;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         a { color: inherit; text-decoration: none; }
-        button { cursor: pointer; font-family: inherit; border: none; background: transparent; }
-        input { font-family: inherit; font-size: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; background: transparent; color: inherit; }
+        input { font-family: inherit; font-size: inherit; color: var(--text); }
 
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        /* ── Animations ── */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); } 50% { box-shadow: 0 0 40px rgba(124,58,237,0.4); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes slideRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes borderGlow { 0%,100% { border-color: rgba(124,58,237,0.3); } 50% { border-color: rgba(124,58,237,0.8); } }
 
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 1rem .85rem 4rem;
+        .container { max-width: 560px; margin: 0 auto; padding: 1.2rem 1rem 5rem; }
+
+        /* ── Background Glow ── */
+        .bg-glow {
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-glow.bottom {
+            top: auto;
+            bottom: -200px;
+            background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
         }
 
-        /* Header */
+        /* ── Header ── */
         .header {
             text-align: center;
-            padding: 2rem 1rem 1.5rem;
-            animation: slideUp 0.5s ease;
+            padding: 2rem 0.5rem 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease;
         }
-        .header .icon-wrap {
-            width: 72px;
-            height: 72px;
-            border-radius: var(--radius-2xl);
-            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+        .header .logo-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #7c3aed, #a78bfa);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 24px rgba(108, 71, 255, 0.25);
-            animation: float 3s ease-in-out infinite;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.35);
+            animation: float 4s ease-in-out infinite;
+            position: relative;
         }
-        .header .icon-wrap i {
-            font-size: 36px;
-            color: #fff;
+        .header .logo-icon i { font-size: 38px; color: #fff; }
+        .header .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 26px;
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            animation: borderGlow 2.5s ease-in-out infinite;
         }
         .header h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
-            line-height: 1.2;
+            font-size: 1.7rem;
+            font-weight: 900;
+            letter-spacing: -0.6px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #f4f4f6, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .header .subtitle {
             font-size: 0.85rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
-        .header .version-badge {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            font-size: 0.72rem;
-            font-weight: 700;
-            margin-top: 8px;
-            letter-spacing: 0.3px;
+        .header .badge-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
         }
+        .header .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+        .badge.premium { background: rgba(124,58,237,0.15); color: #c4b5fd; }
+        .badge.new { background: rgba(16,185,129,0.15); color: #34d399; }
+        .badge.warning { background: var(--gold-bg); color: var(--accent); }
 
-        /* Alert Banner */
-        .alert-banner {
-            background: linear-gradient(135deg, #fff5f5, #ffe8e8);
-            border: 1.5px solid #fecaca;
-            border-radius: var(--radius-xl);
-            padding: 1rem 1.25rem;
-            margin-bottom: 1.5rem;
+        /* ── Alert ── */
+        .alert {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            animation: slideUp 0.5s ease 0.1s both;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
-        .alert-banner i {
-            font-size: 22px;
-            color: var(--danger);
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-        .alert-banner .alert-text {
-            font-size: 0.78rem;
-            color: #991b1b;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-        .alert-banner .alert-text strong {
-            font-weight: 700;
-        }
+        .alert i { font-size: 20px; color: var(--danger); flex-shrink: 0; margin-top: 2px; }
+        .alert .alert-content { font-size: 0.76rem; color: #fca5a5; line-height: 1.55; }
+        .alert .alert-content strong { color: #fecaca; }
 
-        /* Message Box (Kinyarwanda) */
-        .message-box {
-            background: var(--bg-surface);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            animation: slideUp 0.5s ease 0.15s both;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        /* ── Message Box ── */
+        .msg-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.3rem;
+            margin-bottom: 1.4rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease 0.15s both;
         }
-        .message-box .msg-label {
-            font-size: 0.68rem;
+        .msg-box .msg-label {
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-tertiary);
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .message-box .msg-rw {
-            font-size: 0.82rem;
-            color: var(--text-primary);
-            line-height: 1.7;
-            font-weight: 500;
-        }
-        .message-box .msg-en {
-            font-size: 0.74rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
-
-        /* Contribution Cards */
-        .section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
             color: var(--text-tertiary);
             font-weight: 700;
             margin-bottom: 10px;
-            animation: slideUp 0.5s ease 0.2s both;
         }
+        .msg-box .msg-rw {
+            font-size: 0.83rem;
+            color: var(--text);
+            line-height: 1.75;
+            font-weight: 500;
+        }
+        .msg-box .msg-rw strong { color: var(--primary-glow); }
+        .msg-box .msg-en {
+            font-size: 0.73rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Features Grid ── */
+        .section-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-tertiary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 0.9rem;
+            text-align: center;
+            transition: all var(--transition);
+            animation: fadeInUp 0.6s ease both;
+        }
+        .feature-card:nth-child(1) { animation-delay: 0.22s; }
+        .feature-card:nth-child(2) { animation-delay: 0.26s; }
+        .feature-card:nth-child(3) { animation-delay: 0.30s; }
+        .feature-card:nth-child(4) { animation-delay: 0.34s; }
+        .feature-card:nth-child(5) { animation-delay: 0.38s; }
+        .feature-card:nth-child(6) { animation-delay: 0.42s; }
+        .feature-card:hover {
+            border-color: var(--border-active);
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .feature-card .fc-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        .fc-icon.purple { background: rgba(124,58,237,0.15); color: #c4b5fd; }
+        .fc-icon.green { background: rgba(16,185,129,0.15); color: #34d399; }
+        .fc-icon.amber { background: var(--gold-bg); color: var(--accent); }
+        .fc-icon.blue { background: rgba(59,130,246,0.15); color: #93bbfd; }
+        .fc-icon.rose { background: rgba(244,63,94,0.15); color: #fda4af; }
+        .fc-icon.cyan { background: rgba(6,182,212,0.15); color: #67e8f9; }
+        .feature-card .fc-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            letter-spacing: -0.2px;
+        }
+        .feature-card .fc-desc {
+            font-size: 0.66rem;
+            color: var(--text-tertiary);
+            line-height: 1.4;
+        }
+
+        /* ── Contribution Cards ── */
         .contrib-grid {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
+            position: relative;
+            z-index: 1;
         }
         .contrib-card {
-            background: var(--bg-surface);
+            background: var(--bg-card);
             border: 2px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 1rem 1.15rem;
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.2rem;
             cursor: pointer;
-            transition: all var(--transition-fast);
+            transition: all var(--transition);
             display: flex;
             align-items: center;
             justify-content: space-between;
             -webkit-tap-highlight-color: transparent;
-            animation: slideUp 0.5s ease both;
+            animation: fadeInUp 0.6s ease both;
             position: relative;
             overflow: hidden;
         }
-        .contrib-card:nth-child(1) { animation-delay: 0.25s; }
-        .contrib-card:nth-child(2) { animation-delay: 0.3s; }
-        .contrib-card:nth-child(3) { animation-delay: 0.35s; }
-        .contrib-card:nth-child(4) { animation-delay: 0.4s; }
-        .contrib-card:hover, .contrib-card:active {
-            border-color: var(--primary);
-            box-shadow: 0 4px 16px rgba(108, 71, 255, 0.1);
-            transform: translateY(-2px);
-        }
+        .contrib-card:nth-child(1) { animation-delay: 0.28s; }
+        .contrib-card:nth-child(2) { animation-delay: 0.32s; }
+        .contrib-card:nth-child(3) { animation-delay: 0.36s; }
+        .contrib-card:nth-child(4) { animation-delay: 0.40s; }
+        .contrib-card:nth-child(5) { animation-delay: 0.44s; }
+        .contrib-card:active { transform: scale(0.98); }
+        .contrib-card:hover { border-color: rgba(124,58,237,0.5); background: var(--bg-card-hover); }
         .contrib-card.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            box-shadow: 0 4px 20px rgba(108, 71, 255, 0.18);
+            border-color: var(--primary) !important;
+            background: rgba(124,58,237,0.06);
+            box-shadow: 0 0 28px rgba(124,58,237,0.15);
         }
-        .contrib-card.featured {
+        .contrib-card.popular {
             border-color: var(--accent);
-            background: linear-gradient(135deg, #fffaf8, #fff5f0);
+            background: linear-gradient(135deg, rgba(245,158,11,0.04), rgba(245,158,11,0.01));
         }
-        .contrib-card.featured::before {
-            content: '🏆 ICYA MUZINDA';
+        .contrib-card.elite {
+            border-color: var(--platinum);
+            background: linear-gradient(135deg, rgba(226,232,240,0.05), rgba(226,232,240,0.01));
+        }
+        .contrib-card .card-badge {
             position: absolute;
             top: 8px;
             right: 10px;
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             font-weight: 800;
-            color: var(--accent);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
         }
+        .card-badge.best { background: rgba(245,158,11,0.2); color: var(--accent); }
+        .card-badge.pro { background: rgba(226,232,240,0.15); color: var(--platinum); }
         .contrib-card .card-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .contrib-card .radio-circle {
+        .contrib-card .radio-outer {
             width: 22px;
             height: 22px;
             border-radius: 50%;
@@ -271,86 +351,121 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all var(--transition-fast);
+            transition: all var(--transition);
         }
-        .contrib-card.selected .radio-circle {
+        .contrib-card.selected .radio-outer {
             border-color: var(--primary);
             background: var(--primary);
+            box-shadow: 0 0 10px rgba(124,58,237,0.5);
         }
-        .contrib-card.selected .radio-circle::after {
+        .contrib-card.selected .radio-outer::after {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #fff;
         }
-        .contrib-card.featured .radio-circle {
-            border-color: var(--accent);
-        }
         .contrib-card .card-info .amount {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 800;
             letter-spacing: -0.3px;
         }
+        .contrib-card.popular .card-info .amount { color: var(--accent); }
+        .contrib-card.elite .card-info .amount { color: var(--platinum); }
         .contrib-card .card-info .bonus {
-            font-size: 0.68rem;
-            color: var(--success);
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .bonus.green { color: #34d399; }
+        .bonus.gold { color: var(--accent); }
+        .bonus.platinum { color: var(--platinum); }
+        .contrib-card .card-right {
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            text-align: right;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+        .contrib-card .card-right .weeks {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        /* ── Total Display ── */
+        .total-display {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease 0.46s both;
+        }
+        .total-display .total-label {
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
             font-weight: 600;
         }
-        .contrib-card.featured .card-info .bonus {
+        .total-display .total-val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+        .total-display .total-val .highlight { color: var(--primary-glow); }
+        .total-display .total-bonus {
+            font-size: 0.65rem;
             color: var(--accent);
             font-weight: 700;
         }
-        .contrib-card .card-right {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            font-weight: 500;
-            text-align: right;
-            flex-shrink: 0;
-        }
 
-        /* Pay Button */
+        /* ── Buttons ── */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px 28px;
+            padding: 15px 28px;
             border-radius: var(--radius-full);
             font-weight: 700;
             font-size: 0.88rem;
             cursor: pointer;
-            border: none;
-            font-family: var(--font-family);
-            transition: all var(--transition-fast);
+            font-family: var(--font);
+            transition: all var(--transition);
             -webkit-tap-highlight-color: transparent;
             width: 100%;
             letter-spacing: -0.2px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.6s ease 0.5s both;
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 28px rgba(124,58,237,0.45); }
+        .btn-primary:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            box-shadow: none;
         }
         .btn i { font-size: 20px; }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #7c5cfc);
-            background-size: 200% 200%;
-            animation: gradientShift 3s ease infinite;
-            color: #fff;
-        }
-        .btn-primary:hover {
-            box-shadow: 0 6px 24px rgba(108, 71, 255, 0.35);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            transform: none;
-            animation: none;
-        }
 
-        /* Phone Input Modal */
+        /* ── Modal ── */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             z-index: 200;
             display: flex;
             align-items: flex-end;
@@ -359,589 +474,586 @@
             visibility: hidden;
             transition: all 0.25s;
         }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal {
-            background: var(--bg-surface);
-            border-radius: 1.2rem 1.2rem 0 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1.4rem 1.4rem 0 0;
             width: 100%;
-            max-width: 460px;
-            max-height: 88vh;
+            max-width: 480px;
+            max-height: 90vh;
             overflow-y: auto;
-            padding: 1.5rem 1.25rem 2rem;
-            animation: slideUp 0.3s ease;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
+            padding: 1.6rem 1.3rem 2rem;
+            animation: scaleIn 0.3s ease;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
         }
         @media (min-width: 500px) {
             .modal-overlay { align-items: center; }
-            .modal {
-                border-radius: var(--radius-xl);
-                animation: modalIn 0.25s ease;
-            }
+            .modal { border-radius: var(--radius-xl); }
         }
-        .modal .modal-icon-wrap {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
+        .modal .modal-icon {
+            width: 52px; height: 52px;
+            border-radius: 16px;
+            background: rgba(124,58,237,0.15);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
         }
-        .modal .modal-icon-wrap i {
-            font-size: 26px;
-            color: var(--primary);
-        }
-        .modal h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2px;
-        }
-        .modal .modal-sub {
+        .modal .modal-icon i { font-size: 26px; color: #c4b5fd; }
+        .modal h3 { font-size: 1.05rem; font-weight: 700; text-align: center; margin-bottom: 4px; }
+        .modal .modal-sub { font-size: 0.74rem; color: var(--text-secondary); text-align: center; margin-bottom: 1rem; }
+        .modal .summary-chip {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
             font-size: 0.76rem;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 1rem;
+            font-weight: 700;
+            background: rgba(124,58,237,0.1);
+            color: #c4b5fd;
+            margin-bottom: 14px;
         }
-        .modal .field-group {
-            margin-bottom: 10px;
-            text-align: left;
-        }
+        .modal .field-group { margin-bottom: 10px; }
         .modal .field-group label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 3px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
         }
         .modal .field-group input {
             width: 100%;
-            padding: 10px 14px;
+            padding: 11px 16px;
             border: 1.5px solid var(--border);
             border-radius: var(--radius-full);
-            font-size: 0.82rem;
-            font-family: var(--font-family);
+            font-size: 0.84rem;
             outline: none;
             background: var(--bg-input);
-            color: var(--text-primary);
-            transition: all var(--transition-fast);
+            transition: all var(--transition);
             -webkit-appearance: none;
         }
         .modal .field-group input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 71, 255, 0.1);
-            background: var(--bg-surface);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+            background: var(--bg-card);
         }
-        .modal .phone-input-group {
+        .modal .phone-wrap {
             display: flex;
             align-items: center;
             background: var(--bg-input);
             border-radius: var(--radius-full);
             overflow: hidden;
             border: 1.5px solid var(--border);
-            margin-bottom: 0.75rem;
-            transition: all var(--transition-fast);
+            transition: all var(--transition);
         }
-        .modal .phone-input-group:focus-within {
+        .modal .phone-wrap:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 71, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
         }
-        .modal .phone-input-group .prefix {
-            background: var(--bg-hover);
-            padding: 10px 14px;
-            font-size: 0.76rem;
+        .modal .phone-wrap .prefix {
+            padding: 11px 14px;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--text-secondary);
             border-right: 1px solid var(--border);
             white-space: nowrap;
+            background: rgba(0,0,0,0.2);
         }
-        .modal .phone-input-group input {
+        .modal .phone-wrap input {
             flex: 1;
             border: none;
             background: transparent;
-            padding: 10px 12px;
-            font-size: 0.82rem;
-            font-family: var(--font-family);
+            padding: 11px 14px;
+            font-size: 0.84rem;
             outline: none;
-            color: var(--text-primary);
             -webkit-appearance: none;
         }
-        .modal .btn-close-modal {
+        .btn-close {
             width: 100%;
-            padding: 9px;
+            padding: 10px;
             border-radius: var(--radius-full);
-            font-size: 0.75rem;
+            font-size: 0.76rem;
             font-weight: 500;
-            cursor: pointer;
             border: 1px solid var(--border);
-            background: transparent;
             color: var(--text-secondary);
-            margin-top: 6px;
-            font-family: var(--font-family);
+            margin-top: 8px;
+            transition: all var(--transition);
         }
-        .modal .contrib-summary {
-            text-align: center;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            padding: 8px 14px;
-            background: var(--bg-hover);
-            border-radius: var(--radius-full);
-            font-weight: 600;
-        }
-        .modal .contrib-summary strong {
-            color: var(--primary);
-        }
+        .btn-close:hover { background: var(--bg-card-hover); }
 
-        /* Processing Overlay */
-        .processing-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
+        /* ── Processing ── */
+        .proc-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 210;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
             transition: all 0.25s;
         }
-        .processing-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .processing-card {
-            background: var(--bg-surface);
+        .proc-overlay.active { opacity: 1; visibility: visible; }
+        .proc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: var(--radius-xl);
-            padding: 2rem 1.5rem;
+            padding: 2.2rem 1.6rem;
             text-align: center;
             max-width: 340px;
             width: 90%;
-            animation: modalIn 0.25s ease;
+            animation: scaleIn 0.3s ease;
         }
-        .processing-card .big-spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid var(--border);
+        .spinner {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
-            margin: 0 auto 14px;
+            margin: 0 auto 16px;
         }
-        .processing-card h4 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .processing-card p {
-            font-size: 0.74rem;
-            color: var(--text-secondary);
-        }
+        .proc-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+        .proc-card p { font-size: 0.74rem; color: var(--text-secondary); }
 
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 400;
-            pointer-events: none;
+        /* ── Toast ── */
+        .toast-wrap {
+            position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+            z-index: 400; pointer-events: none;
         }
         .toast {
-            padding: 0.6rem 1.1rem;
+            padding: 0.65rem 1.2rem;
             border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: var(--text-primary);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            animation: slideUp 0.3s ease-out;
+            font-size: 0.74rem;
+            font-weight: 600;
+            background: var(--text);
+            color: var(--bg);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+            animation: scaleIn 0.3s ease;
             pointer-events: auto;
             white-space: nowrap;
-            text-align: center;
         }
-        .toast.err {
-            background: var(--danger);
-        }
+        .toast.err { background: var(--danger); color: #fff; }
 
-        /* Footer note */
+        /* ── Footer ── */
         .footer-note {
             text-align: center;
-            font-size: 0.68rem;
+            font-size: 0.66rem;
             color: var(--text-tertiary);
-            margin-top: 1.5rem;
-            animation: slideUp 0.5s ease 0.45s both;
-        }
-        .footer-note i {
-            font-size: 12px;
-            color: var(--gold);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.6s ease 0.55s both;
         }
 
-        @media (max-width: 500px) {
-            .header h1 { font-size: 1.25rem; }
+        @media (max-width: 420px) {
+            .features-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .feature-card { padding: 0.8rem 0.6rem; }
+            .feature-card .fc-title { font-size: 0.7rem; }
+            .header h1 { font-size: 1.35rem; }
+            .contrib-card { padding: 0.85rem 1rem; }
             .contrib-card .card-info .amount { font-size: 1rem; }
-            .header .icon-wrap { width: 60px; height: 60px; }
-            .header .icon-wrap i { font-size: 28px; }
         }
     </style>
 </head>
 <body>
 
+<div class="bg-glow"></div>
+<div class="bg-glow bottom"></div>
+
 <div class="container">
-    <!-- Header -->
+    <!-- ═══════════ HEADER ═══════════ -->
     <div class="header">
-        <div class="icon-wrap">
-            <i class="bx bx-rocket"></i>
+        <div class="logo-icon">
+            <i class="bx bx-bolt-circle"></i>
         </div>
         <h1>MoMo Payment Tester v2.0</h1>
-        <p class="subtitle">Tera inkunga iterambere — Dukore ibikomeye</p>
-        <span class="version-badge">🚀 v2.0 Premium · Iraje</span>
-    </div>
-
-    <!-- Alert Banner -->
-    <div class="alert-banner">
-        <i class="bx bx-error-circle"></i>
-        <div class="alert-text">
-            <strong>ICYITONDERWA:</strong> MoMo Payment Tester v1.0 izahagarikwa burundu v2.0 isohotse. 
-            Abaterankunga bose bazabona v2.0 ku buntu — ariko abatanga <strong>10,000 RWF</strong> bazayibona 
-            <strong>icyumweru kimwe mbere y'abandi BUNTU!</strong>
+        <p class="subtitle">Premium · Ikomeye · Yihuse</p>
+        <div class="badge-row">
+            <span class="badge premium"><i class="bx bx-crown"></i> Premium</span>
+            <span class="badge new"><i class="bx bx-spray-can"></i> UI Nshya</span>
+            <span class="badge warning"><i class="bx bx-time-five"></i> v1.0 Igiye Guhagarara</span>
         </div>
     </div>
 
-    <!-- Kinyarwanda Message -->
-    <div class="message-box">
-        <div class="msg-label">📢 Ubutumwa mu Kinyarwanda</div>
+    <!-- ═══════════ ALERT ═══════════ -->
+    <div class="alert">
+        <i class="bx bx-error-circle"></i>
+        <div class="alert-content">
+            <strong>ICYITONDERWA:</strong> MoMo Payment Tester <strong>v1.0 izahagarara burundu</strong> v2.0 isohotse. 
+            Iyi verisiyo nshya <strong>ntabwo ari ubuntu</strong> — izaba isaba ubwishyu. 
+            <strong>Ariko</strong> abaterankunga bose bazayibona hakiri kare kandi badahembeye!
+        </div>
+    </div>
+
+    <!-- ═══════════ MESSAGE (KINYARWANDA + ENGLISH) ═══════════ -->
+    <div class="msg-box">
+        <div class="msg-label">📢 Ubutumwa Bukomeye</div>
         <div class="msg-rw">
-            Muraho! Ndabashimira cyane ku bw'inkunga yanyu kuri MoMo Payment Tester. 
-            Ubu ndimo guteza imbere verisiyo nshya — <strong>v2.0</strong> — izaba ifite ubushobozi bwinshi, 
-            ikora neza, kandi yihuse kurusha iya mbere.<br><br>
-            Kugira ngo mbibashe, ndasaba inkunga yanyu. Hitamo umubare ushaka gutanga hano hepfo. 
-            Abazatanga <strong>10,000 RWF</strong> bazabona v2.0 <strong>icyumweru kimwe mbere</strong> 
-            y'abandi bose — kandi ku buntu!<br><br>
-            <strong>Murakoze cyane! 💜</strong>
+            Muraho! MoMo Payment Tester <strong>v2.0</strong> irazaza ifite ibintu byinshi bishya 
+            bitazaboneka muri verisiyo ya mbere. Iyi verisiyo nshya <strong>izaba yishyurwa</strong>, 
+            ariko abaterankunga bazayibona <strong>ku buntu</strong> bitewe n'umubare batanze.<br><br>
+            Uko utanze amafaranga menshi, ni nako ubona <strong>ibyumweru byinshi by'ubuntu</strong>. 
+            Utanze <strong>10,000 RWF</strong> abona icyumweru 1, <strong>20,000 RWF</strong> abona 
+            ibyumweru 7 byuzuye ku buntu!<br><br>
+            <strong>Dufatanye dukomeze iterambere! 🚀</strong>
         </div>
         <div class="msg-en">
-            <strong>In English:</strong> I'm developing MoMo Payment Tester v2.0 with better features. 
-            v1.0 will stop working when v2.0 launches. Your contribution helps build it. 
-            10,000 RWF contributors get free early access — one week before everyone else. Thank you!
+            <strong>In English:</strong> v2.0 is a <strong>paid upgrade</strong> — v1.0 will shut down. 
+            Contributors get <strong>free weeks</strong> based on their support. 
+            10,000 RWF = 1 free week. 20,000 RWF = 7 free weeks. 
+            More you give, more you get. Let's build together!
         </div>
     </div>
 
-    <!-- Contribution Options -->
-    <div class="section-title">💳 Hitamo Umubare Wifuza Gutanga</div>
+    <!-- ═══════════ FEATURES COMING IN v2.0 ═══════════ -->
+    <div class="section-label">✨ Ibishya Muri v2.0 · Coming Features</div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="fc-icon purple"><i class="bx bx-message-detail"></i></div>
+            <div class="fc-title">Advanced Messages</div>
+            <div class="fc-desc">Ubutumwa bwinshi buhambaye, bunoze kandi bwihuse</div>
+        </div>
+        <div class="feature-card">
+            <div class="fc-icon green"><i class="bx bx-bell"></i></div>
+            <div class="fc-title">Notification Sender</div>
+            <div class="fc-desc">Kumenyesha uwohereje amafaranga ako kanya</div>
+        </div>
+        <div class="feature-card">
+            <div class="fc-icon amber"><i class="bx bx-palette"></i></div>
+            <div class="fc-title">Best UI Design</div>
+            <div class="fc-desc">Igishushanyo kigezweho, cyoroshye gukoresha</div>
+        </div>
+        <div class="feature-card">
+            <div class="fc-icon blue"><i class="bx bx-rocket"></i></div>
+            <div class="fc-title">Speed Boost</div>
+            <div class="fc-desc">Yihuse cyane kurusha v1.0 — nta gutegereza</div>
+        </div>
+        <div class="feature-card">
+            <div class="fc-icon rose"><i class="bx bx-shield-quarter"></i></div>
+            <div class="fc-title">Better Security</div>
+            <div class="fc-desc">Uburyo bwo kurinda amakuru yawe bwuzuye</div>
+        </div>
+        <div class="feature-card">
+            <div class="fc-icon cyan"><i class="bx bx-history"></i></div>
+            <div class="fc-title">Transaction History</div>
+            <div class="fc-desc">Kureba amateka y'ibyo wakoze byose</div>
+        </div>
+    </div>
+
+    <!-- ═══════════ CONTRIBUTION TIERS ═══════════ -->
+    <div class="section-label">💳 Hitamo Umubare Wifuza Gutanga · Choose Amount</div>
     <div class="contrib-grid" id="contribGrid">
         <!-- 3,000 RWF -->
-        <div class="contrib-card" data-amount="3000" data-label="3,000 RWF">
+        <div class="contrib-card" data-amount="3000" data-weeks="0" data-label="3,000 RWF">
             <div class="card-left">
-                <div class="radio-circle"></div>
+                <div class="radio-outer"></div>
                 <div class="card-info">
                     <div class="amount">3,000 RWF</div>
-                    <div class="bonus">Murakoze! 💜</div>
+                    <div class="bonus green">Murakoze! 💜</div>
                 </div>
             </div>
             <div class="card-right">Inkunga<br>y'umutima</div>
         </div>
 
         <!-- 5,000 RWF -->
-        <div class="contrib-card" data-amount="5000" data-label="5,000 RWF">
+        <div class="contrib-card" data-amount="5000" data-weeks="0" data-label="5,000 RWF">
             <div class="card-left">
-                <div class="radio-circle"></div>
+                <div class="radio-outer"></div>
                 <div class="card-info">
                     <div class="amount">5,000 RWF</div>
-                    <div class="bonus">Murakoze cyane! 🌟</div>
+                    <div class="bonus green">Murakoze cyane! 🌟</div>
                 </div>
             </div>
             <div class="card-right">Inkunga<br>ikomeye</div>
         </div>
 
         <!-- 7,000 RWF -->
-        <div class="contrib-card" data-amount="7000" data-label="7,000 RWF">
+        <div class="contrib-card" data-amount="7000" data-weeks="0" data-label="7,000 RWF">
             <div class="card-left">
-                <div class="radio-circle"></div>
+                <div class="radio-outer"></div>
                 <div class="card-info">
                     <div class="amount">7,000 RWF</div>
-                    <div class="bonus">Ntacyo tutabashije! 🔥</div>
+                    <div class="bonus green">Urakoze! 🔥</div>
                 </div>
             </div>
             <div class="card-right">Inkunga<br>y'umuhate</div>
         </div>
 
-        <!-- 10,000 RWF (Featured) -->
-        <div class="contrib-card featured" data-amount="10000" data-label="10,000 RWF">
+        <!-- 10,000 RWF (Popular) -->
+        <div class="contrib-card popular" data-amount="10000" data-weeks="1" data-label="10,000 RWF">
+            <span class="card-badge best">🏆 BAKUNDWA</span>
             <div class="card-left">
-                <div class="radio-circle"></div>
+                <div class="radio-outer"></div>
                 <div class="card-info">
                     <div class="amount">10,000 RWF</div>
-                    <div class="bonus">🎁 v2.0 KU BUNTU + Icyumweru 1 Mbere!</div>
+                    <div class="bonus gold">🎁 Icyumweru 1 KU BUNTU</div>
                 </div>
             </div>
-            <div class="card-right">ICYUMSO<br>CY'UMUZINDA</div>
+            <div class="card-right"><span class="weeks">1</span><br>icyumweru</div>
+        </div>
+
+        <!-- 20,000 RWF (Elite) -->
+        <div class="contrib-card elite" data-amount="20000" data-weeks="7" data-label="20,000 RWF">
+            <span class="card-badge pro">💎 ELITE</span>
+            <div class="card-left">
+                <div class="radio-outer"></div>
+                <div class="card-info">
+                    <div class="amount">20,000 RWF</div>
+                    <div class="bonus platinum">👑 Ibyumweru 7 BYUZUYE</div>
+                </div>
+            </div>
+            <div class="card-right"><span class="weeks">7</span><br>ibyumweru</div>
         </div>
     </div>
 
-    <!-- Pay Button -->
+    <!-- ═══════════ TOTAL DISPLAY ═══════════ -->
+    <div class="total-display" id="totalDisplay">
+        <span class="total-label">Hitamo umubare...</span>
+        <span class="total-val" id="totalVal">—</span>
+    </div>
+
+    <!-- ═══════════ PAY BUTTON ═══════════ -->
     <button class="btn btn-primary" id="payBtn" disabled>
-        <i class="bx bx-credit-card"></i> Tanga Inkunga
+        <i class="bx bx-credit-card"></i> Hitamo Umubare Wifuza Gutanga
     </button>
     <div class="footer-note">
-        <i class="bx bx-lock-alt"></i> Nta konti ikenewe · Binyujijwe na MTN / Airtel Money
+        <i class="bx bx-lock-alt"></i> Nta konti ikenewe · Binyujijwe na MTN / Airtel Money · No Account Required
     </div>
 </div>
 
-<!-- Phone Input Modal -->
+<!-- ═══════════ PHONE MODAL ═══════════ -->
 <div class="modal-overlay" id="payModal">
     <div class="modal">
-        <div class="modal-icon-wrap">
-            <i class="bx bx-credit-card"></i>
-        </div>
-        <h3>Tanga Inkunga</h3>
-        <p class="modal-sub">Shyiramo amazina na nimero ya telefoni</p>
-        <div class="contrib-summary" id="contribSummary">
-            Urimo gutanga: <strong id="summaryAmount">—</strong>
+        <div class="modal-icon"><i class="bx bx-credit-card"></i></div>
+        <h3>Emeza Inkunga Yawe</h3>
+        <p class="modal-sub">Shyiramo amazina na nimero ya MTN/Airtel</p>
+        <div style="text-align:center;">
+            <span class="summary-chip" id="summaryChip">—</span>
         </div>
         <div class="field-group">
-            <label>Amazina Yawe</label>
-            <input type="text" id="payName" placeholder="Niyonzima Patrick" autocomplete="off">
+            <label>Amazina Yawe Yose</label>
+            <input type="text" id="payName" placeholder="Niyonzima Patrick" autocomplete="off" inputmode="text">
         </div>
         <div class="field-group">
-            <label>Nimero ya Telefoni</label>
+            <label>Nimero ya Telefoni (MTN / Airtel)</label>
         </div>
-        <div class="phone-input-group">
-            <span class="prefix">🇷🇼</span>
-            <input type="tel" id="payPhone" placeholder="0788123456" maxlength="10" autocomplete="off">
+        <div class="phone-wrap">
+            <span class="prefix">🇷🇼 +250</span>
+            <input type="tel" id="payPhone" placeholder="788123456" maxlength="9" autocomplete="off" inputmode="numeric">
         </div>
-        <button class="btn btn-primary" id="paySubmit">
-            <i class="bx bx-check-shield"></i> Emeza Inkunga
+        <button class="btn btn-primary" id="paySubmit" style="margin-top:14px;">
+            <i class="bx bx-check-shield"></i> Emeza — Shira PIN ya MoMo
         </button>
-        <button class="btn-close-modal" id="payCancel">Hagarika</button>
+        <button class="btn-close" id="payCancel">Hagarika · Cancel</button>
     </div>
 </div>
 
-<!-- Processing Overlay -->
-<div class="processing-overlay" id="procOverlay">
-    <div class="processing-card">
-        <div class="big-spinner"></div>
-        <h4>Irakozwe...</h4>
-        <p>Nyamuneka tegereza...</p>
+<!-- ═══════════ PROCESSING OVERLAY ═══════════ -->
+<div class="proc-overlay" id="procOverlay">
+    <div class="proc-card">
+        <div class="spinner"></div>
+        <h4>Irakozwe · Processing</h4>
+        <p>Nyamuneka tegereza... Urimo kwerekeza kuri MoMo</p>
     </div>
 </div>
 
-<!-- Toast Container -->
-<div class="toast-container" id="toastContainer"></div>
+<!-- ═══════════ TOAST ═══════════ -->
+<div class="toast-wrap" id="toastWrap"></div>
 
-<!-- ==================== SCRIPTS ==================== -->
-<!-- 
-    JS files in the /js folder handle:
-    - Payment initialization (MTN/Airtel Money)
-    - Payment verification & polling
-    - Contribution tracking (no accounts needed)
-    - Local storage for access grants
--->
+<!-- ═══════════ SCRIPTS ═══════════ -->
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/payment.js"></script>
 <script src="js/contrib.js"></script>
 
 <script>
-    // Inline initialization — relies on js/ files above
-    (function() {
-        'use strict';
+(function() {
+    'use strict';
 
-        // DOM refs
-        var contribGrid = document.getElementById('contribGrid');
-        var payBtn = document.getElementById('payBtn');
-        var payModal = document.getElementById('payModal');
-        var payName = document.getElementById('payName');
-        var payPhone = document.getElementById('payPhone');
-        var paySubmit = document.getElementById('paySubmit');
-        var payCancel = document.getElementById('payCancel');
-        var summaryAmount = document.getElementById('summaryAmount');
-        var procOverlay = document.getElementById('procOverlay');
+    // ── DOM ──
+    var contribGrid = document.getElementById('contribGrid');
+    var payBtn = document.getElementById('payBtn');
+    var payModal = document.getElementById('payModal');
+    var payName = document.getElementById('payName');
+    var payPhone = document.getElementById('payPhone');
+    var paySubmit = document.getElementById('paySubmit');
+    var payCancel = document.getElementById('payCancel');
+    var summaryChip = document.getElementById('summaryChip');
+    var totalVal = document.getElementById('totalVal');
+    var totalDisplay = document.getElementById('totalDisplay');
+    var procOverlay = document.getElementById('procOverlay');
+    var toastWrap = document.getElementById('toastWrap');
 
-        var selectedAmount = null;
-        var selectedLabel = null;
+    var selectedAmount = null;
+    var selectedWeeks = 0;
+    var selectedLabel = '';
 
-        // Contribution tiers (only these allowed)
-        var ALLOWED_AMOUNTS = [3000, 5000, 7000, 10000];
+    var ALLOWED = [3000, 5000, 7000, 10000, 20000];
 
-        // ── Toast ────────────────────────────────
-        function toast(msg, isErr) {
-            var t = document.createElement('div');
-            t.className = 'toast' + (isErr ? ' err' : '');
-            t.textContent = msg;
-            document.getElementById('toastContainer').appendChild(t);
-            setTimeout(function() {
-                t.style.opacity = '0';
-                t.style.transition = 'opacity .25s';
-                setTimeout(function() { t.remove(); }, 250);
-            }, 3000);
-        }
+    // ── Toast ──
+    function toast(msg, err) {
+        var t = document.createElement('div');
+        t.className = 'toast' + (err ? ' err' : '');
+        t.textContent = msg;
+        toastWrap.appendChild(t);
+        setTimeout(function() {
+            t.style.opacity = '0';
+            t.style.transition = 'opacity 0.3s';
+            setTimeout(function() { t.remove(); }, 300);
+        }, 3200);
+    }
 
-        // ── Card Selection ───────────────────────
-        if (contribGrid) {
-            contribGrid.addEventListener('click', function(e) {
-                var card = e.target.closest('.contrib-card');
-                if (!card) return;
+    // ── Card Selection ──
+    if (contribGrid) {
+        contribGrid.addEventListener('click', function(e) {
+            var card = e.target.closest('.contrib-card');
+            if (!card) return;
 
-                var amount = parseInt(card.getAttribute('data-amount'));
-                if (ALLOWED_AMOUNTS.indexOf(amount) === -1) return;
+            var amt = parseInt(card.getAttribute('data-amount'));
+            if (ALLOWED.indexOf(amt) === -1) return;
 
-                // Remove all selected
-                document.querySelectorAll('.contrib-card').forEach(function(c) {
-                    c.classList.remove('selected');
-                });
+            document.querySelectorAll('.contrib-card').forEach(function(c) { c.classList.remove('selected'); });
+            card.classList.add('selected');
 
-                // Select this one
-                card.classList.add('selected');
-                selectedAmount = amount;
-                selectedLabel = card.getAttribute('data-label');
+            selectedAmount = amt;
+            selectedWeeks = parseInt(card.getAttribute('data-weeks')) || 0;
+            selectedLabel = card.getAttribute('data-label');
 
-                // Enable pay button
-                if (payBtn) {
-                    payBtn.disabled = false;
-                    payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + amount.toLocaleString() + ' RWF';
-                }
-            });
-        }
+            // Update total display
+            if (totalVal) totalVal.innerHTML = '<span class="highlight">' + amt.toLocaleString() + ' RWF</span>';
+            if (totalDisplay) {
+                var bonusText = '';
+                if (selectedWeeks >= 7) bonusText = ' <span class="total-bonus">👑 ' + selectedWeeks + ' ibyumweru ku buntu</span>';
+                else if (selectedWeeks >= 1) bonusText = ' <span class="total-bonus">🎁 Icyumweru ' + selectedWeeks + ' ku buntu</span>';
+                else bonusText = ' <span class="total-bonus">💜 Urakoze!</span>';
+                totalDisplay.querySelector('.total-label').innerHTML = 'Wahisemo gutanga:';
+                totalVal.innerHTML = '<span class="highlight">' + amt.toLocaleString() + ' RWF</span>' + bonusText;
+            }
 
-        // ── Open Payment Modal ───────────────────
-        if (payBtn) {
-            payBtn.addEventListener('click', function() {
-                if (!selectedAmount) {
-                    toast('Hitamo umubare wifuza gutanga!', true);
-                    return;
-                }
-                if (summaryAmount) {
-                    summaryAmount.textContent = selectedAmount.toLocaleString() + ' RWF';
-                }
-                if (payModal) payModal.classList.add('active');
-                if (payName) payName.focus();
-            });
-        }
+            // Enable button
+            if (payBtn) {
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + amt.toLocaleString() + ' RWF';
+            }
+        });
+    }
 
-        // ── Close Modal ──────────────────────────
-        function closePayModal() {
-            if (payModal) payModal.classList.remove('active');
-        }
-        if (payCancel) payCancel.addEventListener('click', closePayModal);
-        if (payModal) {
-            payModal.addEventListener('click', function(e) {
-                if (e.target === payModal) closePayModal();
-            });
-        }
+    // ── Open Modal ──
+    if (payBtn) {
+        payBtn.addEventListener('click', function() {
+            if (!selectedAmount) { toast('Hitamo umubare wifuza gutanga!', true); return; }
+            if (summaryChip) {
+                var chipText = selectedAmount.toLocaleString() + ' RWF';
+                if (selectedWeeks >= 7) chipText += ' · 👑 ' + selectedWeeks + ' Ibyumweru Ubuntu';
+                else if (selectedWeeks >= 1) chipText += ' · 🎁 Icyumweru ' + selectedWeeks + ' Ubuntu';
+                summaryChip.textContent = chipText;
+            }
+            if (payModal) payModal.classList.add('active');
+            if (payName) setTimeout(function() { payName.focus(); }, 200);
+        });
+    }
 
-        // ── Execute Payment ──────────────────────
-        // Uses payment.js (in /js folder) for actual MoMo API calls
-        if (paySubmit) {
-            paySubmit.addEventListener('click', function() {
-                var name = (payName.value || '').trim();
-                var phone = (payPhone.value || '').replace(/\s/g, '');
+    function closeModal() { if (payModal) payModal.classList.remove('active'); }
+    if (payCancel) payCancel.addEventListener('click', closeModal);
+    if (payModal) payModal.addEventListener('click', function(e) { if (e.target === payModal) closeModal(); });
 
-                if (!name || name.length < 2) {
-                    toast('Andika amazina yawe yose', true);
-                    return;
-                }
-                if (!/^0?7[89]\d{7}$/.test(phone)) {
-                    toast('Andika nimero ya telefoni ikwiye (078...)', true);
-                    return;
-                }
-                if (!selectedAmount || ALLOWED_AMOUNTS.indexOf(selectedAmount) === -1) {
-                    toast('Hitamo umubare wemewe', true);
-                    return;
-                }
+    // ── Execute Payment ──
+    if (paySubmit) {
+        paySubmit.addEventListener('click', function() {
+            var name = (payName.value || '').trim();
+            var phone = (payPhone.value || '').replace(/\s/g, '');
 
-                closePayModal();
+            if (!name || name.length < 2) { toast('Andika amazina yawe yose.', true); payName.focus(); return; }
+            if (!/^7[89]\d{7}$/.test(phone)) { toast('Andika nimero ikwiye ya MTN/Airtel (788...).', true); payPhone.focus(); return; }
+            if (!selectedAmount || ALLOWED.indexOf(selectedAmount) === -1) { toast('Hitamo umubare wemewe.', true); return; }
 
-                // Disable pay button
-                if (payBtn) {
-                    payBtn.disabled = true;
-                    payBtn.innerHTML = '<i class="bx bx-loader bx-spin"></i> Irakozwe...';
-                }
+            closeModal();
 
-                // Show processing
-                if (procOverlay) procOverlay.classList.add('active');
+            if (payBtn) {
+                payBtn.disabled = true;
+                payBtn.innerHTML = '<i class="bx bx-loader bx-spin"></i> Irakozwe...';
+            }
+            if (procOverlay) procOverlay.classList.add('active');
 
-                // Delegate to payment module (js/payment.js)
-                if (typeof KotWebPay !== 'undefined' && KotWebPay.initContribution) {
-                    KotWebPay.initContribution({
-                        amount: selectedAmount,
-                        phone: phone,
-                        name: name,
-                        isContrib: true,
-                        contribTier: selectedLabel,
-                        onSuccess: function(result) {
-                            if (procOverlay) procOverlay.classList.remove('active');
-                            if (result.payment_url) {
-                                // Redirect to MoMo payment page
-                                window.location.href = result.payment_url;
-                                // Start polling for verification
-                                if (typeof KotWebPay !== 'undefined' && KotWebPay.pollVerification) {
-                                    KotWebPay.pollVerification(result.reference, selectedAmount);
-                                }
-                            }
-                            toast('Kuri MoMo... Shira PIN yawe!');
-                        },
-                        onError: function(err) {
-                            if (procOverlay) procOverlay.classList.remove('active');
-                            toast(err.message || 'Byanze. Ongera ugerageze.', true);
-                            if (payBtn) {
-                                payBtn.disabled = false;
-                                payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + selectedAmount.toLocaleString() + ' RWF';
+            // Delegate to payment module
+            if (typeof KotWebPay !== 'undefined' && KotWebPay.initContribution) {
+                KotWebPay.initContribution({
+                    amount: selectedAmount,
+                    phone: '250' + phone,
+                    name: name,
+                    weeks: selectedWeeks,
+                    tierLabel: selectedLabel,
+                    onSuccess: function(res) {
+                        if (res.payment_url) {
+                            window.location.href = res.payment_url;
+                            if (typeof KotWebPay !== 'undefined' && KotWebPay.pollVerification) {
+                                KotWebPay.pollVerification(res.reference, selectedAmount, selectedWeeks);
                             }
                         }
-                    });
-                } else {
-                    // Fallback if js files not loaded
-                    if (procOverlay) procOverlay.classList.remove('active');
-                    toast('Sisitemu irimo gukorwa... Ongera ugerageze.', true);
-                    if (payBtn) {
-                        payBtn.disabled = false;
-                        payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + selectedAmount.toLocaleString() + ' RWF';
+                        toast('Kuri MoMo... Shira PIN yawe! ✅');
+                    },
+                    onError: function(err) {
+                        if (procOverlay) procOverlay.classList.remove('active');
+                        toast(err.message || 'Byanze. Ongera ugerageze.', true);
+                        if (payBtn) {
+                            payBtn.disabled = false;
+                            payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + selectedAmount.toLocaleString() + ' RWF';
+                        }
                     }
+                });
+            } else {
+                if (procOverlay) procOverlay.classList.remove('active');
+                toast('Module y'ubwishyu ntiraboneka. Ongera ugerageze.', true);
+                if (payBtn) {
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + selectedAmount.toLocaleString() + ' RWF';
                 }
-            });
+            }
+        });
+    }
+
+    // ── Return URL Check ──
+    (function() {
+        var p = new URLSearchParams(window.location.search);
+        var st = p.get('status');
+        var ref = p.get('reference') || p.get('tx_ref');
+        var amt = parseInt(p.get('amount')) || 0;
+
+        if (st === 'successful' || st === 'success') {
+            if (procOverlay) procOverlay.classList.remove('active');
+            try {
+                var proof = {
+                    amount: amt,
+                    ref: ref || '',
+                    weeks: selectedWeeks || Math.floor(amt / 10000),
+                    at: Date.now(),
+                    freeUntil: Date.now() + ((selectedWeeks || Math.floor(amt / 10000)) * 7 * 24 * 60 * 60 * 1000)
+                };
+                localStorage.setItem('momo_v2_contrib', btoa(JSON.stringify(proof)));
+            } catch(e) {}
+            toast('🎉 Inkunga yakiriwe! Murakoze cyane!', false);
+            if (payBtn) {
+                payBtn.disabled = true;
+                payBtn.innerHTML = '<i class="bx bx-check-circle"></i> Yakiriwe! Murakoze';
+            }
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         }
-
-        // ── Check return URL for successful payment ──
-        (function checkReturn() {
-            var params = new URLSearchParams(window.location.search);
-            var status = params.get('status');
-            if (status === 'successful' || status === 'success') {
-                toast('Inkunga yawe yakiriwe! Murakoze cyane! 🎉');
-                // Store contribution proof locally (no account needed)
-                try {
-                    var contribProof = {
-                        amount: selectedAmount || parseInt(params.get('amount')) || 0,
-                        ref: params.get('reference') || params.get('tx_ref') || '',
-                        at: Date.now(),
-                        tier: selectedLabel || ''
-                    };
-                    // 10k contributors get early access flag
-                    if (contribProof.amount >= 10000) {
-                        contribProof.earlyAccess = true;
-                        contribProof.earlyAccessUntil = Date.now() + (7 * 24 * 60 * 60 * 1000);
-                    }
-                    localStorage.setItem('momo_contrib', btoa(JSON.stringify(contribProof)));
-                } catch(e) {}
-
-                // Clean URL
-                if (window.history && window.history.replaceState) {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
+        if (st === 'failed') {
+            if (procOverlay) procOverlay.classList.remove('active');
+            toast('Inkunga ntiyakiriwe. Ongera ugerageze.', true);
+            if (payBtn) {
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<i class="bx bx-credit-card"></i> Tanga ' + (selectedAmount ? selectedAmount.toLocaleString() + ' RWF' : 'Inkunga');
             }
-            if (status === 'failed') {
-                toast('Inkunga ntiyakiriwe. Ongera ugerageze.', true);
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
-        })();
-
-        console.log('💜 MoMo Payment Tester v2.0 — Contribution Page Ready');
-        console.log('   Nta konti ikenewe · No account required');
-        console.log('   Amafaranga yemewe: ' + ALLOWED_AMOUNTS.map(function(a){ return a.toLocaleString()+' RWF'; }).join(', '));
+        }
     })();
+
+    console.log('💎 MoMo Payment Tester v2.0 · Contribution Page');
+    console.log('   Premium App · Paid · Contributors Get Free Weeks');
+    console.log('   Tiers: ' + ALLOWED.map(function(a){ return a.toLocaleString()+' RWF'; }).join(', '));
+})();
 </script>
 
 </body>
