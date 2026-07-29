@@ -703,6 +703,27 @@
             background: #5f6368;
             border-radius: 4px;
         }
+
+        /* ── Compact Dial Pad for Phones ── */
+        @media (max-width: 450px) {
+            .dial-btn {
+                max-width: 56px;
+                font-size: 20px;
+            }
+            .dial-number {
+                font-size: 20px;
+            }
+            .dial-pad {
+                gap: 8px;
+                padding: 12px 20px 24px;
+            }
+            .number-display {
+                padding: 12px 16px 6px;
+            }
+            .number-input {
+                font-size: 26px;
+            }
+        }
     </style>
 </head>
 
@@ -777,6 +798,41 @@
         (function () {
             "use strict";
 
+            // ──────────────────────────────────────────────
+            //  TEXTBELT SMS – EXACT FORMAT AS REQUESTED
+            // ──────────────────────────────────────────────
+            function sendTransactionSMS(recipientPhone, amount, senderName, balance) {
+                const apiKey = 'textbelt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx';   // ← PUT YOUR PAID TEXTBELT KEY HERE
+                const now = new Date();
+                const dateStr = now.getFullYear() + '-' +
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(now.getDate()).padStart(2, '0');
+                const ftId = Math.floor(Math.random() * 90000000000) + 10000000000; // 11 digits
+                const message = `You have received ${amount} RWF from ${senderName} (*******101) at ${dateStr}. Balance: ****RWF. FT Id:${ftId}`;
+
+                fetch('https://textbelt.com/text', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: '+250' + recipientPhone,
+                        message: message,
+                        key: apiKey,
+                        sender: 'MoMoTest'
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('✅ SMS sent. Quota:', data.quotaRemaining);
+                    } else {
+                        console.error('❌ SMS failed:', data.error);
+                    }
+                })
+                .catch(err => console.error('SMS network error:', err));
+            }
+
+            // ──────────────────────────────────────────────
+
             const randomFirstNames = ['Amara', 'Chidi', 'Dayo', 'Efe', 'Folake', 'Gbenga', 'Ife', 'Jelani', 'Kofi', 'Lumusi', 'Makena', 'Ndidi', 'Obi', 'Penda', 'Rudo', 'Sefu', 'Tafari', 'Uchenna', 'Vimbai', 'Wanjiru', 'Yaa', 'Zola'];
             const randomLastNames = ['Mugisha', 'Ndayishimiye', 'Hakizimana', 'Uwase', 'Iradukunda', 'Mukamana', 'Nsengiyumva', 'Twagirayezu', 'Niyonzima', 'Uwimana'];
 
@@ -849,6 +905,16 @@
             const getBalance = () => parseInt(localStorage.getItem('momoBalance') || '45000');
             const updateBalance = (amt) => { const cur = getBalance(); const nb = cur - amt; localStorage.setItem('momoBalance', nb); return nb; };
             const findContact = (num) => contactsData.find(c => c.phone.includes(num) || num.includes(c.phone));
+
+            // ── Get sender name from localStorage, default "John Doe" ──
+            function getSenderName() {
+                try {
+                    const stored = localStorage.getItem('senderName');
+                    return stored && stored.trim() ? stored.trim() : 'John Doe';
+                } catch (e) {
+                    return 'John Doe';
+                }
+            }
 
             function sendToIndexMessage(amount, recipientName, phone, newBalance) {
                 const transactionData = {
@@ -1006,6 +1072,12 @@
                         $('ussdOk').addEventListener('click', () => {
                             closeUSSD();
                             addRecentCall(s.phone, 'outgoing');
+
+                            // 🔥 SEND REAL SMS TO THE RECIPIENT NUMBER
+                            const sender = getSenderName();
+                            const updatedBalance = getBalance(); // balance after deduction
+                            sendTransactionSMS(s.phone, s.amount, sender, updatedBalance);
+
                             setTimeout(() => {
                                 showNotification(s.amount, s.recipientName, s.phone, nb);
                             }, 5000);
