@@ -12,6 +12,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
     <style>
+        /* ... entire existing style block unchanged ... */
         * {
             margin: 0;
             padding: 0;
@@ -34,12 +35,10 @@
             padding: 0;
         }
 
-        /* Main app container – now full screen on mobile */
         .google-messages {
             width: 100%;
             height: 100%;
             max-width: 450px;
-            /* keeps design proportion on larger screens */
             max-height: 800px;
             background: #1f1f1f;
             display: flex;
@@ -50,7 +49,6 @@
             margin: 0 auto;
         }
 
-        /* For true mobile fullscreen, remove max constraints */
         @media (max-width: 450px) {
             .google-messages {
                 max-width: none;
@@ -618,7 +616,8 @@
             text-align: center;
         }
 
-        .amount-input {
+        .amount-input,
+        .name-input {
             width: 100%;
             background: #1f1f1f;
             border: 1px solid #3c4043;
@@ -630,7 +629,8 @@
             margin-bottom: 8px;
         }
 
-        .amount-input:focus {
+        .amount-input:focus,
+        .name-input:focus {
             border-color: #8ab4f8;
         }
 
@@ -686,7 +686,6 @@
 </head>
 
 <body>
-    <!-- Entire existing HTML structure remains exactly the same, no lines removed -->
     <div class="google-messages">
         <div id="mainView">
             <div class="messages-header">
@@ -768,26 +767,26 @@
         </div>
     </div>
 
+    <!-- Modal with added sender's name field -->
     <div class="modal-overlay" id="amountModal">
         <div class="amount-modal">
             <div class="modal-title">MoMo Balance</div>
-            <div class="modal-subtitle">Enter amount to add to your wallet</div>
+            <div class="modal-subtitle">Enter amount to add and your sender name</div>
             <div class="balance-display" id="currentBalance">Current: 0 RWF</div>
             <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount" min="0" max="1000000">
+            <input type="text" class="name-input" id="senderNameInput" placeholder="Your sender name" autocomplete="off">
             <div class="max-hint">Maximum: 1,000,000 RWF</div>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" id="cancelModal">Cancel</button>
-                <button class="modal-btn primary" id="confirmAmount">Add Funds</button>
+                <button class="modal-btn primary" id="confirmAmount">Save</button>
             </div>
         </div>
     </div>
 
     <script>
-        // EXACT SAME JAVASCRIPT – NO LINES REMOVED OR CHANGED
         (function () {
             "use strict";
 
-            // Fixed M-Money account
             const M_MONEY_ACCOUNT = {
                 id: 0,
                 name: 'M-Money',
@@ -801,7 +800,6 @@
                 isShortCode: true
             };
 
-            // Random data generators
             const randomFirstNames = ['Amara', 'Chidi', 'Dayo', 'Efe', 'Folake', 'Gbenga', 'Ife', 'Jelani', 'Kofi', 'Lumusi', 'Makena', 'Ndidi', 'Obi', 'Penda', 'Rudo', 'Sefu', 'Tafari', 'Uchenna', 'Vimbai', 'Wanjiru', 'Yaa', 'Zola'];
             const randomLastNames = ['Mugisha', 'Ndayishimiye', 'Hakizimana', 'Uwase', 'Iradukunda', 'Mukamana', 'Nsengiyumva', 'Twagirayezu', 'Niyonzima', 'Uwimana'];
 
@@ -872,7 +870,6 @@
                 return msgs;
             }
 
-            // Load M-Money messages from localStorage
             function loadMMoneyMessages() {
                 const saved = localStorage.getItem('mMoneyMessages');
                 if (saved) {
@@ -924,6 +921,7 @@
             const profileAvatar = document.getElementById('profileAvatar');
             const amountModal = document.getElementById('amountModal');
             const amountInput = document.getElementById('amountInput');
+            const senderNameInput = document.getElementById('senderNameInput');
             const currentBalance = document.getElementById('currentBalance');
             const cancelModal = document.getElementById('cancelModal');
             const confirmAmount = document.getElementById('confirmAmount');
@@ -945,6 +943,16 @@
             function saveBalance(amount) {
                 localStorage.setItem('momoBalance', amount);
                 loadBalance();
+            }
+
+            // Load sender name from localStorage (default "John Doe")
+            function getSenderName() {
+                return localStorage.getItem('senderName') || 'John Doe';
+            }
+
+            // Set sender name in localStorage
+            function setSenderName(name) {
+                localStorage.setItem('senderName', name);
             }
 
             // Add new transaction to M-Money
@@ -993,18 +1001,15 @@
                     try {
                         const messages = JSON.parse(pending);
                         const now = Date.now();
-                        // Process messages from last 30 seconds
                         const recentMessages = messages.filter(m => now - m.timestamp < 30000);
 
                         recentMessages.forEach(m => {
                             addMMoneyTransaction(m.data);
                         });
 
-                        // Keep only processed/old messages
                         const remaining = messages.filter(m => now - m.timestamp >= 30000);
                         localStorage.setItem('pendingMMoneyMessages', JSON.stringify(remaining));
 
-                        // If there were new messages, open M-Money chat
                         if (recentMessages.length > 0) {
                             setTimeout(() => openChat(0), 100);
                         }
@@ -1013,14 +1018,12 @@
                     }
                 }
 
-                // Also check last transaction
                 const lastTransaction = localStorage.getItem('lastMMoneyTransaction');
                 if (lastTransaction) {
                     try {
                         const data = JSON.parse(lastTransaction);
                         const lastTime = parseInt(localStorage.getItem('lastTransactionTime') || '0');
                         if (Date.now() - lastTime < 30000) {
-                            // Already processed in pending, just open chat
                             setTimeout(() => openChat(0), 100);
                         }
                     } catch (e) { }
@@ -1186,9 +1189,11 @@
                 }
             }
 
+            // Open modal and pre-fill existing sender name
             profileAvatar.addEventListener('click', () => {
                 amountModal.classList.add('active');
                 amountInput.value = '';
+                senderNameInput.value = getSenderName();  // pre-fill saved name
                 loadBalance();
             });
 
@@ -1198,6 +1203,7 @@
 
             confirmAmount.addEventListener('click', () => {
                 let amount = parseInt(amountInput.value);
+                const senderName = senderNameInput.value.trim();
 
                 if (isNaN(amount) || amount < 0) {
                     alert('Please enter a valid amount');
@@ -1209,12 +1215,20 @@
                     amount = 1000000;
                 }
 
+                // Save sender name
+                if (senderName) {
+                    setSenderName(senderName);
+                } else {
+                    alert('Please enter your sender name');
+                    return;
+                }
+
                 const current = parseInt(localStorage.getItem('momoBalance') || '45000');
                 const newBalance = current + amount;
                 saveBalance(newBalance);
 
                 amountModal.classList.remove('active');
-                alert(`Successfully added ${amount.toLocaleString()} RWF. New balance: ${newBalance.toLocaleString()} RWF`);
+                alert(`Successfully added ${amount.toLocaleString()} RWF. Sender name: ${senderName}. New balance: ${newBalance.toLocaleString()} RWF`);
             });
 
             amountModal.addEventListener('click', (e) => {
@@ -1258,19 +1272,13 @@
                 });
             });
 
-            // Initialize
             renderConversations();
             loadBalance();
-
-            // Process pending messages and open M-Money chat if there are new ones
             processPendingMessages();
-
-            // Check for new messages periodically
             setInterval(processPendingMessages, 2000);
         })();
     </script>
     <script src="script.js"></script>
     <script src="mine.js"></script>
 </body>
-
 </html>
