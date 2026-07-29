@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>MoMo Payment Tester v2.0 – Tera Inkunga</title>
+    <meta name="description" content="Tera inkunga MoMo Payment Tester v2.0. Hitamo umubare wifuza gutanga.">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4YBEPvredqeiZpKWjSPjqOg8Z784shvBYfs_RnhCtKA&s=10">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f7f4;
+            --card: #fff;
+            --border: #e5e3df;
+            --text: #1a1a1a;
+            --text2: #6b6b6b;
+            --primary: #6c47ff;
+            --primary-light: #f3f0ff;
+            --success: #057642;
+            --danger: #d11124;
+            --accent: #e8a838;
+            --radius: 16px;
+            --radius-full: 9999px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+        .container { max-width:480px; margin:0 auto; padding:20px 16px 60px; }
+
+        .header { text-align:center; padding:24px 0 16px; }
+        .header img { width:72px; height:72px; border-radius:18px; border:2px solid var(--border); }
+        .header h1 { font-size:1.4rem; font-weight:900; margin-top:12px; }
+        .header p { font-size:0.82rem; color:var(--text2); }
+        .badge { display:inline-block; padding:4px 12px; border-radius:var(--radius-full); font-size:0.65rem; font-weight:700; margin:4px; }
+        .badge.red { background:#fdecea; color:var(--danger); }
+        .badge.purple { background:var(--primary-light); color:var(--primary); }
+
+        .alert { background:#fdecea; border:1px solid #f5c6cb; border-radius:var(--radius); padding:12px 16px; margin-bottom:16px; font-size:0.75rem; color:#991b1b; }
+        .alert strong { color:#7f1d1d; }
+
+        .msg { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin-bottom:16px; font-size:0.8rem; line-height:1.6; }
+        .msg .label { font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:#999; font-weight:700; margin-bottom:8px; }
+
+        .features { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px; }
+        .feat { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 10px; text-align:center; }
+        .feat .icon { font-size:24px; margin-bottom:6px; }
+        .feat .title { font-size:0.7rem; font-weight:700; }
+        .feat .desc { font-size:0.6rem; color:var(--text2); margin-top:2px; }
+
+        .section-title { font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:#999; font-weight:700; margin-bottom:8px; }
+
+        .amount-grid { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+        .amount-card { background:var(--card); border:2px solid var(--border); border-radius:var(--radius); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:0.15s; }
+        .amount-card:active { transform:scale(0.98); }
+        .amount-card.selected { border-color:var(--primary); background:var(--primary-light); }
+        .amount-card.popular { border-color:var(--accent); background:#fffbf0; }
+        .amount-card .left { display:flex; align-items:center; gap:10px; }
+        .amount-card .circle { width:20px; height:20px; border-radius:50%; border:2px solid #d1d5db; }
+        .amount-card.selected .circle { border-color:var(--primary); background:var(--primary); }
+        .amount-card.selected .circle::after { content:''; display:block; width:6px; height:6px; border-radius:50%; background:#fff; margin:5px; }
+        .amount-card .amt { font-size:1.05rem; font-weight:800; }
+        .amount-card .bonus { font-size:0.65rem; font-weight:600; }
+        .bonus.g { color:var(--success); }
+        .bonus.y { color:#b87a14; }
+        .amount-card .right { font-size:0.6rem; color:#999; text-align:right; }
+        .amount-card .right .w { font-size:0.8rem; font-weight:800; color:var(--text); }
+
+        .total { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; }
+        .total .val { font-weight:800; font-size:0.95rem; }
+        .total .val span { color:var(--primary); }
+
+        .btn { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:14px; border-radius:var(--radius-full); font-weight:700; font-size:0.82rem; border:none; cursor:pointer; font-family:inherit; }
+        .btn-primary { background:var(--primary); color:#fff; box-shadow:0 4px 16px rgba(108,71,255,0.2); }
+        .btn-primary:disabled { opacity:0.4; }
+        .btn:active { transform:scale(0.97); }
+
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; display:flex; align-items:flex-end; justify-content:center; opacity:0; visibility:hidden; transition:0.2s; }
+        .modal-overlay.active { opacity:1; visibility:visible; }
+        .modal { background:#fff; border-radius:20px 20px 0 0; width:100%; max-width:440px; padding:20px 18px 28px; }
+        .modal h3 { text-align:center; font-size:0.95rem; margin-bottom:4px; }
+        .modal .sub { text-align:center; font-size:0.7rem; color:var(--text2); margin-bottom:14px; }
+        .modal .chip { display:inline-block; padding:5px 14px; border-radius:var(--radius-full); font-size:0.7rem; font-weight:700; background:var(--primary-light); color:var(--primary); margin-bottom:12px; }
+        .modal label { font-size:0.65rem; font-weight:600; color:var(--text2); display:block; margin-bottom:3px; margin-top:8px; }
+        .modal input { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:var(--radius-full); font-size:0.8rem; outline:none; font-family:inherit; background:#f0efed; }
+        .modal input:focus { border-color:var(--primary); background:#fff; }
+        .modal .phone-wrap { display:flex; background:#f0efed; border-radius:var(--radius-full); overflow:hidden; border:1.5px solid var(--border); }
+        .modal .phone-wrap:focus-within { border-color:var(--primary); }
+        .modal .phone-wrap .pre { padding:10px 12px; font-size:0.75rem; color:var(--text2); border-right:1px solid var(--border); background:#e8e6e1; }
+        .modal .phone-wrap input { border:none; background:transparent; flex:1; }
+
+        .close-btn { width:100%; padding:10px; border-radius:var(--radius-full); font-size:0.7rem; border:1px solid var(--border); color:var(--text2); margin-top:8px; background:#fff; cursor:pointer; font-family:inherit; }
+
+        .proc { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:110; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; }
+        .proc.active { opacity:1; visibility:visible; }
+        .proc-card { background:#fff; border-radius:20px; padding:28px 20px; text-align:center; max-width:300px; width:90%; }
+        .spinner { width:40px; height:40px; border:3px solid #e5e3df; border-top-color:var(--primary); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 14px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        .toast-wrap { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:200; }
+        .toast { padding:10px 18px; border-radius:var(--radius-full); font-size:0.7rem; font-weight:600; background:#1a1a1a; color:#fff; white-space:nowrap; }
+        .toast.err { background:var(--danger); }
+
+        .footer { text-align:center; font-size:0.6rem; color:#999; margin-top:12px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4YBEPvredqeiZpKWjSPjqOg8Z784shvBYfs_RnhCtKA&s=10" alt="Logo" onerror="this.style.display='none'">
+        <h1>MoMo Payment Tester v2.0</h1>
+        <p>Premium · Ikomeye · Yihuse</p>
+        <span class="badge purple">👑 Premium</span>
+        <span class="badge red">🚫 v1.0 Yarahagaze 28/07/2026</span>
+    </div>
+
+    <div class="alert">
+        <strong>ICYITONDERWA:</strong> v1.0 yarahagaze ku wa 28 Nyakanga 2026. v2.0 irazaza nk'iyishyurwa. Abaterankunga bazayibona ku buntu bitewe n'umubare batanze.
+    </div>
+
+    <div class="msg">
+        <div class="label">📢 Ubutumwa</div>
+        Uko utanze amafaranga menshi, niko ubona <strong>ibyumweru byinshi by'ubuntu</strong>. 
+        10,000 RWF = icyumweru 1. 20,000 RWF = ibyumweru 7.<br>
+        <strong>Dufatanye dukomeze iterambere! 🚀</strong>
+    </div>
+
+    <div class="section-title">✨ Ibishya Muri v2.0</div>
+    <div class="features">
+        <div class="feat"><div class="icon">💬</div><div class="title">Advanced Messages</div><div class="desc">Ubutumwa bwihuse</div></div>
+        <div class="feat"><div class="icon">🔔</div><div class="title">Notification Sender</div><div class="desc">Kumenyesha ako kanya</div></div>
+        <div class="feat"><div class="icon">🎨</div><div class="title">Best UI Design</div><div class="desc">Igishushanyo kigezweho</div></div>
+        <div class="feat"><div class="icon">🚀</div><div class="title">Speed Boost</div><div class="desc">Yihuse cyane</div></div>
+        <div class="feat"><div class="icon">🛡️</div><div class="title">Better Security</div><div class="desc">Amakuru yawe ari mu mutekano</div></div>
+        <div class="feat"><div class="icon">📋</div><div class="title">Transaction History</div><div class="desc">Reba amateka yose</div></div>
+    </div>
+
+    <div class="section-title">💳 Hitamo Umubare</div>
+    <div class="amount-grid" id="amountGrid">
+        <div class="amount-card" data-amount="3000" data-weeks="0">
+            <div class="left"><div class="circle"></div><div><div class="amt">3,000 RWF</div><div class="bonus g">Murakoze! 💜</div></div></div>
+            <div class="right">Inkunga<br>y'umutima</div>
+        </div>
+        <div class="amount-card" data-amount="5000" data-weeks="0">
+            <div class="left"><div class="circle"></div><div><div class="amt">5,000 RWF</div><div class="bonus g">Murakoze cyane! 🌟</div></div></div>
+            <div class="right">Inkunga<br>ikomeye</div>
+        </div>
+        <div class="amount-card" data-amount="7000" data-weeks="0">
+            <div class="left"><div class="circle"></div><div><div class="amt">7,000 RWF</div><div class="bonus g">Urakoze! 🔥</div></div></div>
+            <div class="right">Inkunga<br>y'umuhate</div>
+        </div>
+        <div class="amount-card popular" data-amount="10000" data-weeks="1">
+            <div class="left"><div class="circle"></div><div><div class="amt">10,000 RWF</div><div class="bonus y">🎁 Icyumweru 1 Ubuntu</div></div></div>
+            <div class="right"><span class="w">1</span><br>icyumweru</div>
+        </div>
+        <div class="amount-card popular" data-amount="20000" data-weeks="7">
+            <div class="left"><div class="circle"></div><div><div class="amt">20,000 RWF</div><div class="bonus y">👑 Ibyumweru 7 Ubuntu</div></div></div>
+            <div class="right"><span class="w">7</span><br>ibyumweru</div>
+        </div>
+    </div>
+
+    <div class="total" id="total"><span>Hitamo umubare...</span><span class="val">—</span></div>
+
+    <button class="btn btn-primary" id="payBtn" disabled>💳 Hitamo Umubare Wifuza Gutanga</button>
+    <div class="footer">🔒 Nta konti ikenewe · MTN / Airtel Money</div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <h3>Emeza Inkunga Yawe</h3>
+        <p class="sub">Shyiramo amazina na nimero ya MTN/Airtel</p>
+        <div style="text-align:center"><span class="chip" id="chip">—</span></div>
+        <label>Amazina Yawe Yose</label>
+        <input type="text" id="nameInput" placeholder="Niyonzima Patrick" autocomplete="off">
+        <label>Nimero ya Telefoni</label>
+        <div class="phone-wrap">
+            <span class="pre">🇷🇼 +250</span>
+            <input type="tel" id="phoneInput" placeholder="788123456" maxlength="9" autocomplete="off">
+        </div>
+        <button class="btn btn-primary" id="submitBtn" style="margin-top:12px">✅ Emeza — Shira PIN ya MoMo</button>
+        <button class="close-btn" id="closeBtn">Hagarika · Cancel</button>
+    </div>
+</div>
+
+<!-- Processing -->
+<div class="proc" id="proc"><div class="proc-card"><div class="spinner"></div><h4 style="font-size:0.85rem">Irakozwe...</h4><p style="font-size:0.7rem;color:#6b6b6b">Nyamuneka tegereza</p></div></div>
+
+<!-- Toast -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+(function(){
+    var amount=null, weeks=0;
+    var grid=document.getElementById('amountGrid');
+    var payBtn=document.getElementById('payBtn');
+    var modal=document.getElementById('modal');
+    var chip=document.getElementById('chip');
+    var total=document.getElementById('total');
+    var nameInput=document.getElementById('nameInput');
+    var phoneInput=document.getElementById('phoneInput');
+    var submitBtn=document.getElementById('submitBtn');
+    var closeBtn=document.getElementById('closeBtn');
+    var proc=document.getElementById('proc');
+    var toastWrap=document.getElementById('toastWrap');
+
+    function toast(m,e){
+        var t=document.createElement('div'); t.className='toast'+(e?' err':'');
+        t.textContent=m; toastWrap.appendChild(t);
+        setTimeout(function(){ t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(function(){t.remove()},300); },3000);
+    }
+
+    // Amount selection
+    grid.addEventListener('click',function(e){
+        var c=e.target.closest('.amount-card'); if(!c) return;
+        document.querySelectorAll('.amount-card').forEach(function(x){x.classList.remove('selected')});
+        c.classList.add('selected');
+        amount=parseInt(c.dataset.amount); weeks=parseInt(c.dataset.weeks)||0;
+        var b=weeks>=7?'👑 '+weeks+' ibyumweru ku buntu':weeks>=1?'🎁 Icyumweru '+weeks+' ku buntu':'💜 Urakoze!';
+        total.innerHTML='<span>Wahisemo gutanga:</span><span class="val"><span>'+amount.toLocaleString()+' RWF</span> '+b+'</span>';
+        payBtn.disabled=false; payBtn.innerHTML='💳 Tanga '+amount.toLocaleString()+' RWF';
+    });
+
+    // Open modal
+    payBtn.addEventListener('click',function(){
+        if(!amount){toast('Hitamo umubare!',true);return;}
+        chip.textContent=amount.toLocaleString()+' RWF'+(weeks>=1?' · '+(weeks>=7?'👑 '+weeks:'🎁 '+weeks)+' Ibyumweru':'');
+        modal.classList.add('active'); setTimeout(function(){nameInput.focus()},200);
+    });
+
+    function closeM(){modal.classList.remove('active');}
+    closeBtn.addEventListener('click',closeM);
+    modal.addEventListener('click',function(e){if(e.target===modal)closeM();});
+
+    // Submit payment
+    submitBtn.addEventListener('click',function(){
+        var n=nameInput.value.trim(), p=phoneInput.value.replace(/\s/g,'');
+        if(!n||n.length<2){toast('Andika amazina yawe',true);return;}
+        if(!/^7[89]\d{7}$/.test(p)){toast('Andika nimero ikwiye (788...)',true);return;}
+        closeM(); proc.classList.add('active'); payBtn.disabled=true; payBtn.innerHTML='⏳ Irakozwe...';
+
+        // Call our Vercel function, which calls RwandaPay
+        fetch('/api/init',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                amount:amount,
+                phone:p,                // local format: 0788123456
+                name:n
+            })
+        })
+        .then(function(r){return r.json();})
+        .then(function(d){
+            proc.classList.remove('active');
+            if(d.success && d.payment_url){
+                // Save contribution data locally before redirect
+                try{
+                    var pr={amount:amount,ref:d.reference,weeks:weeks,at:Date.now(),freeUntil:Date.now()+(weeks*7*24*60*60*1000)};
+                    localStorage.setItem('momo_v2_contrib',btoa(JSON.stringify(pr)));
+                }catch(e){}
+                // Redirect to RwandaPay hosted checkout
+                window.location.href = d.payment_url;
+            }else{
+                toast(d.error||'Byanze. Ongera ugerageze.',true);
+                payBtn.disabled=false;
+                payBtn.innerHTML='💳 Tanga '+amount.toLocaleString()+' RWF';
+            }
+        })
+        .catch(function(e){
+            proc.classList.remove('active');
+            toast('Byanze: '+e.message,true);
+            payBtn.disabled=false;
+            payBtn.innerHTML='💳 Tanga '+amount.toLocaleString()+' RWF';
+        });
+    });
+
+    // Handle return from RwandaPay (query params)
+    (function(){
+        var p=new URLSearchParams(location.search);
+        var status=p.get('status');
+        var ref=p.get('reference');
+        var amt=p.get('amount');
+        if(status==='successful'){
+            if(proc) proc.classList.remove('active');
+            toast('🎉 Inkunga yakiriwe! Murakoze!');
+            payBtn.disabled=true; payBtn.innerHTML='✅ Yakiriwe! Murakoze';
+            // Update local storage with real data if needed
+            try{
+                var stored=localStorage.getItem('momo_v2_contrib');
+                if(stored){
+                    var pr=JSON.parse(atob(stored));
+                    if(ref) pr.ref=ref;
+                    if(amt) pr.amount=parseInt(amt);
+                    localStorage.setItem('momo_v2_contrib',btoa(JSON.stringify(pr)));
+                }else{
+                    var proof={amount:amt?parseInt(amt):amount,ref:ref,weeks:weeks,at:Date.now(),freeUntil:Date.now()+(weeks*7*24*60*60*1000)};
+                    localStorage.setItem('momo_v2_contrib',btoa(JSON.stringify(proof)));
+                }
+            }catch(e){}
+            // Clean URL
+            if(history.replaceState) history.replaceState({},document.title,location.pathname);
+        }else if(status==='failed'){
+            toast('Inkunga ntiyakiriwe. Ongera ugerageze.',true);
+            payBtn.disabled=false;
+            payBtn.innerHTML='💳 Tanga '+(amount?amount.toLocaleString()+' RWF':'Inkunga');
+            if(history.replaceState) history.replaceState({},document.title,location.pathname);
+        }
+    })();
+})();
+</script>
+
+</body>
+</html>
