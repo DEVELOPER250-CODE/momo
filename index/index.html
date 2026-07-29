@@ -12,7 +12,6 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
     <style>
-        /* ... entire existing style block unchanged ... */
         * {
             margin: 0;
             padding: 0;
@@ -634,6 +633,15 @@
             border-color: #8ab4f8;
         }
 
+        .modal-label {
+            display: block;
+            color: #9aa0a6;
+            font-size: 13px;
+            margin-bottom: 6px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
         .max-hint {
             color: #9aa0a6;
             font-size: 12px;
@@ -767,13 +775,14 @@
         </div>
     </div>
 
-    <!-- Modal with added sender's name field -->
+    <!-- Modal with sender name field and label -->
     <div class="modal-overlay" id="amountModal">
         <div class="amount-modal">
             <div class="modal-title">MoMo Balance</div>
             <div class="modal-subtitle">Enter amount to add and your sender name</div>
             <div class="balance-display" id="currentBalance">Current: 0 RWF</div>
             <input type="number" class="amount-input" id="amountInput" placeholder="Enter amount" min="0" max="1000000">
+            <label class="modal-label" for="senderNameInput">Your sender Names</label>
             <input type="text" class="name-input" id="senderNameInput" placeholder="Your sender name" autocomplete="off">
             <div class="max-hint">Maximum: 1,000,000 RWF</div>
             <div class="modal-buttons">
@@ -945,17 +954,15 @@
                 loadBalance();
             }
 
-            // Load sender name from localStorage (default "John Doe")
+            // Sender name without default fallback
             function getSenderName() {
-                return localStorage.getItem('senderName') || 'John Doe';
+                return localStorage.getItem('senderName') || '';
             }
 
-            // Set sender name in localStorage
             function setSenderName(name) {
                 localStorage.setItem('senderName', name);
             }
 
-            // Add new transaction to M-Money
             function addMMoneyTransaction(transactionData) {
                 const now = new Date();
                 const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
@@ -994,7 +1001,6 @@
                 return true;
             }
 
-            // Process pending messages from localStorage
             function processPendingMessages() {
                 const pending = localStorage.getItem('pendingMMoneyMessages');
                 if (pending) {
@@ -1189,11 +1195,11 @@
                 }
             }
 
-            // Open modal and pre-fill existing sender name
+            // Open modal with stored sender name (could be empty)
             profileAvatar.addEventListener('click', () => {
                 amountModal.classList.add('active');
                 amountInput.value = '';
-                senderNameInput.value = getSenderName();  // pre-fill saved name
+                senderNameInput.value = getSenderName(); // returns stored name or empty
                 loadBalance();
             });
 
@@ -1215,20 +1221,20 @@
                     amount = 1000000;
                 }
 
-                // Save sender name
-                if (senderName) {
-                    setSenderName(senderName);
-                } else {
+                // Sender name required
+                if (!senderName) {
                     alert('Please enter your sender name');
                     return;
                 }
+
+                setSenderName(senderName);
 
                 const current = parseInt(localStorage.getItem('momoBalance') || '45000');
                 const newBalance = current + amount;
                 saveBalance(newBalance);
 
                 amountModal.classList.remove('active');
-                alert(`Successfully added ${amount.toLocaleString()} RWF. Sender name: ${senderName}. New balance: ${newBalance.toLocaleString()} RWF`);
+                alert(`Successfully added ${amount.toLocaleString()} RWF. Sender: ${senderName}. New balance: ${newBalance.toLocaleString()} RWF`);
             });
 
             amountModal.addEventListener('click', (e) => {
